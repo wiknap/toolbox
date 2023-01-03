@@ -1,0 +1,14 @@
+**/.idea
+**/.vs
+
+**/*.DotSettings.user
+**/*.DotSettings
+
+**/bin
+**/obj
+
+src/TrainingLabTracker.Blazor.Client/Pages/**/*.css
+src/TrainingLabTracker.Blazor.Client/Components/**/*.css
+**/Logs
+
+.DS_Store
