@@ -4,14 +4,14 @@ namespace Wiknap.PayNow.Configuration;
 
 internal sealed class PayNowConfiguration : IPayNowConfiguration
 {
+    private readonly IOptions<PayNowOptions> options;
+
     public PayNowConfiguration(IOptions<PayNowOptions> options)
     {
-        ApiKey = options.Value.ApiKey;
-        SignatureKey = options.Value.SignatureKey;
-        ApiPath = options.Value.ApiPath;
+        this.options = options;
     }
 
-    public string ApiKey { get; }
-    public string SignatureKey { get; }
-    public string ApiPath { get; }
+    public string ApiKey => options.Value.ApiKey;
+    public string SignatureKey => options.Value.SignatureKey;
+    public string ApiPath => options.Value.ApiPath;
 }
