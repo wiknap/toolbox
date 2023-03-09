@@ -3,9 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Wiknap.PayNow.Configuration;
 
-[PublicAPI]
+[UsedImplicitly]
 public static class ServiceCollectionExtension
 {
+    [PublicAPI]
     public static IServiceCollection AddPayNow(this IServiceCollection services)
     {
         services.AddOptions<PayNowOptions>().BindConfiguration(PayNowOptions.SectionName);

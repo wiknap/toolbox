@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace Wiknap.PayNow.Configuration;
 
-[PublicAPI]
+[UsedImplicitly]
 internal sealed class PayNowConfiguration : IPayNowConfiguration
 {
     private readonly IOptions<PayNowOptions> options;
