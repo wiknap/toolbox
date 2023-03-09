@@ -1,12 +1,9 @@
-﻿using JetBrains.Annotations;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Wiknap.PayNow.Configuration;
 
-[UsedImplicitly]
 public static class ServiceCollectionExtension
 {
-    [PublicAPI]
     public static IServiceCollection AddPayNow(this IServiceCollection services)
     {
         services.AddOptions<PayNowOptions>().BindConfiguration(PayNowOptions.SectionName);
