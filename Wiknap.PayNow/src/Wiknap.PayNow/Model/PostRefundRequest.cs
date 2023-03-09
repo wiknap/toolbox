@@ -14,5 +14,5 @@ public enum RefundReason
     RMA,
     REFUND_BEFORE_14,
     REFUND_AFTER_14,
-    OTHER,
+    OTHER
 }
