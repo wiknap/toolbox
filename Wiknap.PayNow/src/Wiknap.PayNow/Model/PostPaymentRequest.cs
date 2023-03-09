@@ -30,35 +30,32 @@ public sealed record PostPaymentRequest
         private init
         {
             var valueAsString = $"{value:0.00}";
-            var valueNoComma = valueAsString.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, "");
+            var valueNoComma = valueAsString.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator,
+                string.Empty);
             AmountAsInt = int.Parse(valueNoComma);
         }
     }
 
-    [JsonPropertyName("amount")]
-    public int AmountAsInt { get; private init; }
+    [JsonPropertyName("amount")] public int AmountAsInt { get; private init; }
 
-    [JsonPropertyName("currency")]
-    public Currency? Currency { get; }
+    [JsonPropertyName("currency")] public Currency? Currency { get; }
 
-    [JsonPropertyName("externalId")]
-    public string ExternalId { get; }
+    [JsonPropertyName("externalId")] public string ExternalId { get; }
 
-    [JsonPropertyName("description")]
-    public string Description { get; }
+    [JsonPropertyName("description")] public string Description { get; }
 
-    [JsonPropertyName("continueUrl")]
-    public string ContinueUrl { get; }
+    [JsonPropertyName("continueUrl")] public string ContinueUrl { get; }
 
-    [JsonPropertyName("buyer")]
-    public Buyer Buyer { get; }
+    [JsonPropertyName("buyer")] public Buyer Buyer { get; }
 }
 
 [PublicAPI]
 public sealed record Buyer(
     [property: JsonPropertyName("email")] string Email,
-    [property: JsonPropertyName("firstName")] string FirstName,
-    [property: JsonPropertyName("lastName")] string LastName,
+    [property: JsonPropertyName("firstName")]
+    string FirstName,
+    [property: JsonPropertyName("lastName")]
+    string LastName,
     [property: JsonPropertyName("phone")] Phone Phone,
     [property: JsonPropertyName("locale")] string Locale);
 
