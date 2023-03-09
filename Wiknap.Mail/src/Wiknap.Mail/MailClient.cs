@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Net.Smtp;
@@ -6,6 +7,7 @@ using MimeKit;
 
 namespace Wiknap.Mail;
 
+[PublicAPI]
 public class MailClient : IMailClient
 {
     private readonly IMailClientConfiguration configuration;
