@@ -1,22 +1,14 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
 
-public sealed record PostRefundRequest
-{
-    public PostRefundRequest(int amount, RefundReason? reason)
-    {
-        Amount = amount;
-        Reason = reason;
-    }
+[PublicAPI]
+public sealed record PostRefundRequest(
+    [property: JsonPropertyName("amount")] int Amount,
+    [property: JsonPropertyName("reason")] RefundReason? Reason);
 
-    [JsonPropertyName("amount")]
-    public int Amount { get; }
-
-    [JsonPropertyName("reason")]
-    public RefundReason? Reason { get; }
-}
-
+[PublicAPI]
 public enum RefundReason
 {
     RMA,

@@ -1,5 +1,8 @@
-﻿namespace Wiknap.PayNow.Model;
+﻿using JetBrains.Annotations;
 
+namespace Wiknap.PayNow.Model;
+
+[PublicAPI]
 public enum PaymentStatus
 {
     NEW,

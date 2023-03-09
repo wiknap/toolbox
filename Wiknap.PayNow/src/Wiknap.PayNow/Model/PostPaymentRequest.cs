@@ -1,11 +1,14 @@
 ﻿using System.Globalization;
 using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
 
+[PublicAPI]
 public sealed record PostPaymentRequest
 {
-    public PostPaymentRequest(decimal amount, Currency? currency, string externalId, string description, string continueUrl, Buyer buyer)
+    public PostPaymentRequest(
+        decimal amount, Currency? currency, string externalId, string description, string continueUrl, Buyer buyer)
     {
         Amount = amount;
         Currency = currency;
@@ -51,44 +54,15 @@ public sealed record PostPaymentRequest
     public Buyer Buyer { get; }
 }
 
-public sealed record Buyer
-{
-    public Buyer(string email, string firstName, string lastName, Phone phone, string locale)
-    {
-        Email = email;
-        FirstName = firstName;
-        LastName = lastName;
-        Phone = phone;
-        Locale = locale;
-    }
+[PublicAPI]
+public sealed record Buyer(
+    [property: JsonPropertyName("email")] string Email,
+    [property: JsonPropertyName("firstName")] string FirstName,
+    [property: JsonPropertyName("lastName")] string LastName,
+    [property: JsonPropertyName("phone")] Phone Phone,
+    [property: JsonPropertyName("locale")] string Locale);
 
-    [JsonPropertyName("email")]
-    public string Email { get; }
-
-    [JsonPropertyName("firstName")]
-    public string FirstName { get; }
-
-    [JsonPropertyName("lastName")]
-    public string LastName { get; }
-
-    [JsonPropertyName("phone")]
-    public Phone Phone { get; }
-
-    [JsonPropertyName("locale")]
-    public string Locale { get; }
-}
-
-public sealed record Phone
-{
-    public Phone(string prefix, string number)
-    {
-        Prefix = prefix;
-        Number = number;
-    }
-
-    [JsonPropertyName("Prefix")]
-    public string Prefix { get; }
-
-    [JsonPropertyName("number")]
-    public string Number { get; }
-}
+[PublicAPI]
+public sealed record Phone(
+    [property: JsonPropertyName("prefix")] string Prefix,
+    [property: JsonPropertyName("number")] string Number);

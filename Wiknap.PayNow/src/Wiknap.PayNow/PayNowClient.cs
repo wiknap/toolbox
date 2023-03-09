@@ -2,12 +2,14 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 using Wiknap.PayNow.Exceptions;
 using Wiknap.PayNow.Model;
 using Wiknap.PayNow.Path;
 
 namespace Wiknap.PayNow;
 
+[PublicAPI]
 public sealed class PayNowClient : IPayNowClient
 {
     private readonly Encoding encoding = Encoding.UTF8;
@@ -28,7 +30,8 @@ public sealed class PayNowClient : IPayNowClient
         hmacSha256Calculator = new HmacSha256Calculator(encoding.GetBytes(configuration.SignatureKey));
     }
 
-    public async Task<PostPaymentResponse> PostPaymentRequestAsync(PostPaymentRequest paymentRequest)
+    public async Task<PostPaymentResponse> PostPaymentRequestAsync(PostPaymentRequest paymentRequest,
+        CancellationToken ct = default)
     {
         var builder = GetBuilder();
         builder.AddPaymentsPath();
@@ -36,7 +39,7 @@ public sealed class PayNowClient : IPayNowClient
         var response = await SendAndDeserializeAsync<PostPaymentResponse>(
             HttpMethod.Post,
             builder.ToString(),
-            paymentRequest);
+            paymentRequest, ct);
 
         if (response is null)
             throw new EmptyResponseException();
@@ -44,7 +47,7 @@ public sealed class PayNowClient : IPayNowClient
         return response;
     }
 
-    public async Task<GetPaymentStatusResponse> GetPaymentStatusAsync(string paymentId)
+    public async Task<GetPaymentStatusResponse> GetPaymentStatusAsync(string paymentId, CancellationToken ct = default)
     {
         var builder = GetBuilder();
         builder
@@ -52,7 +55,8 @@ public sealed class PayNowClient : IPayNowClient
             .AddPaymentPath(paymentId)
             .AddPaymentStatusPath();
 
-        var response = await SendAndDeserializeAsync<GetPaymentStatusResponse>(HttpMethod.Get, builder.ToString());
+        var response =
+            await SendAndDeserializeAsync<GetPaymentStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
 
         if (response is null)
             throw new EmptyResponseException();
@@ -60,14 +64,16 @@ public sealed class PayNowClient : IPayNowClient
         return response;
     }
 
-    public async Task<GetPaymentMethodsResponse> GetPaymentMethodsAsync(Currency currency = Currency.PLN)
+    public async Task<GetPaymentMethodsResponse> GetPaymentMethodsAsync(Currency currency = Currency.PLN,
+        CancellationToken ct = default)
     {
         var builder = GetBuilder();
         builder
             .AddPaymentsPath()
             .AddPaymentMethodsPath(currency);
 
-        var response = await SendAndDeserializeAsync<GetPaymentMethodsResponse>(HttpMethod.Get, builder.ToString());
+        var response =
+            await SendAndDeserializeAsync<GetPaymentMethodsResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
 
         if (response is null)
             throw new EmptyResponseException();
@@ -75,7 +81,8 @@ public sealed class PayNowClient : IPayNowClient
         return response;
     }
 
-    public async Task<PostRefundResponse> PostRefundRequestAsync(string paymentId, PostRefundRequest refundRequest)
+    public async Task<PostRefundResponse> PostRefundRequestAsync(string paymentId, PostRefundRequest refundRequest,
+        CancellationToken ct = default)
     {
         var builder = GetBuilder();
         builder
@@ -86,8 +93,8 @@ public sealed class PayNowClient : IPayNowClient
         var response = await SendAndDeserializeAsync<PostRefundResponse>(
             HttpMethod.Post,
             builder.ToString(),
-            refundRequest
-        );
+            refundRequest,
+            ct);
 
         if (response is null)
             throw new EmptyResponseException();
@@ -95,7 +102,7 @@ public sealed class PayNowClient : IPayNowClient
         return response;
     }
 
-    public async Task<GetRefundStatusResponse> GetRefundStatusAsync(string refundId)
+    public async Task<GetRefundStatusResponse> GetRefundStatusAsync(string refundId, CancellationToken ct = default)
     {
         var builder = GetBuilder();
         builder
@@ -103,7 +110,8 @@ public sealed class PayNowClient : IPayNowClient
             .AddRefundPath(refundId)
             .AddRefundStatusPath();
 
-        var response = await SendAndDeserializeAsync<GetRefundStatusResponse>(HttpMethod.Get, builder.ToString());
+        var response =
+            await SendAndDeserializeAsync<GetRefundStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
 
         if (response is null)
             throw new EmptyResponseException();
@@ -113,7 +121,8 @@ public sealed class PayNowClient : IPayNowClient
 
     private static PayNowApiPathBuilder GetBuilder() => new();
 
-    private async Task<T?> SendAndDeserializeAsync<T>(HttpMethod method, string path, object? content = null)
+    private async Task<T?> SendAndDeserializeAsync<T>(HttpMethod method, string path, object? content = null,
+        CancellationToken ct = default)
     {
         var request = new HttpRequestMessage(method, path);
 
@@ -128,11 +137,11 @@ public sealed class PayNowClient : IPayNowClient
 
         request.Headers.Add(PayNowConstants.HeadersNames.IdempotencyKey, Guid.NewGuid().ToString());
 
-        using var response = await httpClient.SendAsync(request);
+        using var response = await httpClient.SendAsync(request, ct);
         {
-            await using var contentStream = await response.Content.ReadAsStreamAsync();
+            await using var contentStream = await response.Content.ReadAsStreamAsync(ct);
             {
-                return await JsonSerializer.DeserializeAsync<T>(contentStream, serializerOptions);
+                return await JsonSerializer.DeserializeAsync<T>(contentStream, serializerOptions, ct);
             }
         }
     }

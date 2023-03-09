@@ -1,22 +1,14 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
 
-public sealed record PostRefundResponse
-{
-    public PostRefundResponse(string refundId, PostRefundStatus? status)
-    {
-        RefundId = refundId;
-        Status = status;
-    }
+[PublicAPI]
+public sealed record PostRefundResponse(
+    [property: JsonPropertyName("refundId")] string RefundId,
+    [property: JsonPropertyName("status")] PostRefundStatus? Status);
 
-    [JsonPropertyName("refundId")]
-    public string RefundId { get; }
-
-    [JsonPropertyName("status")]
-    public PostRefundStatus? Status { get; }
-}
-
+[PublicAPI]
 public enum PostRefundStatus
 {
     NEW,

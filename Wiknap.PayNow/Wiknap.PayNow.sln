@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow", "src\Wiknap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Configuration", "src\Wiknap.PayNow.Configuration\Wiknap.PayNow.Configuration.csproj", "{57961E02-7E14-4545-BA82-91CB314D4064}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Tests", "test\Wiknap.PayNow.Tests\Wiknap.PayNow.Tests.csproj", "{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,6 +18,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4D18DFCD-BBC4-4F78-B470-1BD38CD69DA4} = {F782A007-C346-47BB-9B85-B3ACA41F231E}
 		{57961E02-7E14-4545-BA82-91CB314D4064} = {F782A007-C346-47BB-9B85-B3ACA41F231E}
+		{B5CBBF15-4824-445D-9AD9-54EA4D046EBC} = {248587D8-C9AE-41BB-AE4A-277518499C9E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4D18DFCD-BBC4-4F78-B470-1BD38CD69DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -26,5 +29,9 @@ Global
 		{57961E02-7E14-4545-BA82-91CB314D4064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57961E02-7E14-4545-BA82-91CB314D4064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57961E02-7E14-4545-BA82-91CB314D4064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,26 +1,15 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
 
-public sealed record GetRefundStatusResponse
-{
-    public GetRefundStatusResponse(string refundId, GetRefundStatus? status, GetFailureReason? failureReason)
-    {
-        RefundId = refundId;
-        Status = status;
-        FailureReason = failureReason;
-    }
+[PublicAPI]
+public sealed record GetRefundStatusResponse(
+    [property: JsonPropertyName("refundId")] string RefundId,
+    [property: JsonPropertyName("status")] GetRefundStatus? Status,
+    [property: JsonPropertyName("failureReason")] GetFailureReason? FailureReason);
 
-    [JsonPropertyName("refundId")]
-    public string RefundId { get; }
-
-    [JsonPropertyName("status")]
-    public GetRefundStatus? Status { get; }
-
-    [JsonPropertyName("failureReason")]
-    public GetFailureReason? FailureReason { get; }
-}
-
+[PublicAPI]
 public enum GetRefundStatus
 {
     NEW,
@@ -30,6 +19,7 @@ public enum GetRefundStatus
     CANCELLED
 }
 
+[PublicAPI]
 public enum GetFailureReason
 {
     CARD_BALANCE_ERROR,

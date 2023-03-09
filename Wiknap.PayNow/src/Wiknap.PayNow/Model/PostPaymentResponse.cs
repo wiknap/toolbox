@@ -1,26 +1,15 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
 
-public sealed record PostPaymentResponse
-{
-    public PostPaymentResponse(string redirectUrl, string paymentId, Status? status)
-    {
-        RedirectUrl = redirectUrl;
-        PaymentId = paymentId;
-        Status = status;
-    }
+[PublicAPI]
+public sealed record PostPaymentResponse(
+    [property: JsonPropertyName("redirectUrl")] string RedirectUrl,
+    [property: JsonPropertyName("paymentId")] string PaymentId,
+    [property: JsonPropertyName("status")] Status? Status);
 
-    [JsonPropertyName("redirectUrl")]
-    public string RedirectUrl { get; }
-
-    [JsonPropertyName("paymentId")]
-    public string PaymentId { get; }
-
-    [JsonPropertyName("status")]
-    public Status? Status { get; }
-}
-
+[PublicAPI]
 public enum Status
 {
     NEW,

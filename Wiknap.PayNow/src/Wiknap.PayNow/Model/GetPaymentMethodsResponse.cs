@@ -1,22 +1,14 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
 
-public sealed record GetPaymentMethodsResponse
-{
-    public GetPaymentMethodsResponse(PaymentMethodType? type, PaymentMethod[] paymentMethods)
-    {
-        Type = type;
-        PaymentMethods = paymentMethods;
-    }
+[PublicAPI]
+public sealed record GetPaymentMethodsResponse(
+    [property: JsonPropertyName("type")] PaymentMethodType? Type,
+    [property: JsonPropertyName("paymentMethods")] PaymentMethod[] PaymentMethods);
 
-    [JsonPropertyName("type")]
-    public PaymentMethodType? Type { get; }
-
-    [JsonPropertyName("paymentMethods")]
-    public PaymentMethod[] PaymentMethods { get; set; }
-}
-
+[PublicAPI]
 public enum PaymentMethodType
 {
     BLIK,
@@ -24,33 +16,15 @@ public enum PaymentMethodType
     CARD
 }
 
-public sealed record PaymentMethod
-{
-    public PaymentMethod(int id, string name, string description, string imageUrl, PaymentMethodStatus? status)
-    {
-        Id = id;
-        Name = name;
-        Description = description;
-        ImageUrl = imageUrl;
-        Status = status;
-    }
+[PublicAPI]
+public sealed record PaymentMethod(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("description")] string Description,
+    [property: JsonPropertyName("image")] string ImageUrl,
+    [property: JsonPropertyName("status")] PaymentMethodStatus? Status);
 
-    [JsonPropertyName("id")]
-    public int Id { get; }
-
-    [JsonPropertyName("name")]
-    public string Name { get; }
-
-    [JsonPropertyName("description")]
-    public string Description { get; }
-
-    [JsonPropertyName("image")]
-    public string ImageUrl { get; }
-
-    [JsonPropertyName("status")]
-    public PaymentMethodStatus? Status { get; }
-}
-
+[PublicAPI]
 public enum PaymentMethodStatus
 {
     ENABLED,

@@ -4,7 +4,6 @@ using Wiknap.PayNow.Model;
 namespace Wiknap.PayNow.Path;
 
 internal sealed class PayNowApiPathBuilder :
-    IPayNowApiPathBuilder,
     IPayNowApiPaymentsPathBuilder,
     IPayNowApiPaymentPathBuilder,
     IPayNowApiPaymentRefundsPathBuilder,
@@ -53,12 +52,6 @@ internal sealed class PayNowApiPathBuilder :
     }
 
     private void AppendPath(string path) => builder.Append($"/{path}");
-
-    private void AppendPaths(params string[] paths)
-    {
-        foreach (var path in paths)
-            AppendPath(path);
-    }
 
     public override string ToString() => builder.ToString();
 }
