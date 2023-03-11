@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Wiknap.PayNow.Model;
 
 namespace Wiknap.PayNow.Path;
@@ -10,6 +11,7 @@ internal sealed class PayNowApiPathBuilder :
     IPayNowApiPaymentRefundPathBuilder
 {
     private readonly StringBuilder builder;
+    private readonly CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
     public PayNowApiPathBuilder()
     {
@@ -48,10 +50,10 @@ internal sealed class PayNowApiPathBuilder :
     void IPayNowApiPaymentsPathBuilder.AddPaymentMethodsPath(Currency currency)
     {
         AppendPath("paymentmethods");
-        builder.Append($"?currency={currency.ToString()}");
+        builder.Append(cultureInfo, $"?currency={currency.ToString()}");
     }
 
-    private void AppendPath(string path) => builder.Append($"/{path}");
+    private void AppendPath(string path) => builder.Append(cultureInfo, $"/{path}");
 
     public override string ToString() => builder.ToString();
 }

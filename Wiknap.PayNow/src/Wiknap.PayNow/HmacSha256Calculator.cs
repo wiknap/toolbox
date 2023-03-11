@@ -2,7 +2,7 @@
 
 namespace Wiknap.PayNow;
 
-internal sealed class HmacSha256Calculator
+internal sealed class HmacSha256Calculator : IDisposable
 {
     private readonly HMACSHA256 hmacSha256;
 
@@ -14,4 +14,9 @@ internal sealed class HmacSha256Calculator
     public string CalculateHmac(byte[] byteArray) => ConvertToBase64String(hmacSha256.ComputeHash(byteArray));
 
     private static string ConvertToBase64String(byte[] byteArray) => Convert.ToBase64String(byteArray);
+
+    public void Dispose()
+    {
+        hmacSha256.Dispose();
+    }
 }

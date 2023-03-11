@@ -10,7 +10,7 @@ using Wiknap.PayNow.Path;
 namespace Wiknap.PayNow;
 
 [PublicAPI]
-public sealed class PayNowClient : IPayNowClient
+public sealed class PayNowClient : IPayNowClient, IDisposable
 {
     private readonly Encoding encoding = Encoding.UTF8;
     private readonly HmacSha256Calculator hmacSha256Calculator;
@@ -124,7 +124,7 @@ public sealed class PayNowClient : IPayNowClient
     private async Task<T?> SendAndDeserializeAsync<T>(HttpMethod method, string path, object? content = null,
         CancellationToken ct = default)
     {
-        var request = new HttpRequestMessage(method, path);
+        using var request = new HttpRequestMessage(method, path);
 
         if (content != null)
         {
@@ -144,5 +144,10 @@ public sealed class PayNowClient : IPayNowClient
                 return await JsonSerializer.DeserializeAsync<T>(contentStream, serializerOptions, ct);
             }
         }
+    }
+
+    public void Dispose()
+    {
+        hmacSha256Calculator.Dispose();
     }
 }

@@ -23,39 +23,43 @@ public sealed record PostPaymentRequest
     {
         get
         {
-            var valueAsString = AmountAsInt.ToString();
+            var valueAsString = AmountAsInt.ToString(CultureInfo.InvariantCulture);
             var valueWithComma = $"{valueAsString[..^2]},{valueAsString[^2..]}";
-            return decimal.Parse(valueWithComma);
+            return decimal.Parse(valueWithComma, CultureInfo.InvariantCulture);
         }
         private init
         {
             var valueAsString = $"{value:0.00}";
             var valueNoComma = valueAsString.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator,
                 string.Empty);
-            AmountAsInt = int.Parse(valueNoComma);
+            AmountAsInt = int.Parse(valueNoComma, CultureInfo.InvariantCulture);
         }
     }
 
-    [JsonPropertyName("amount")] public int AmountAsInt { get; private init; }
+    [JsonPropertyName("amount")]
+    public int AmountAsInt { get; private init; }
 
-    [JsonPropertyName("currency")] public Currency? Currency { get; }
+    [JsonPropertyName("currency")]
+    public Currency? Currency { get; }
 
-    [JsonPropertyName("externalId")] public string ExternalId { get; }
+    [JsonPropertyName("externalId")]
+    public string ExternalId { get; }
 
-    [JsonPropertyName("description")] public string Description { get; }
+    [JsonPropertyName("description")]
+    public string Description { get; }
 
-    [JsonPropertyName("continueUrl")] public string ContinueUrl { get; }
+    [JsonPropertyName("continueUrl")]
+    public string ContinueUrl { get; }
 
-    [JsonPropertyName("buyer")] public Buyer Buyer { get; }
+    [JsonPropertyName("buyer")]
+    public Buyer Buyer { get; }
 }
 
 [PublicAPI]
 public sealed record Buyer(
     [property: JsonPropertyName("email")] string Email,
-    [property: JsonPropertyName("firstName")]
-    string FirstName,
-    [property: JsonPropertyName("lastName")]
-    string LastName,
+    [property: JsonPropertyName("firstName")] string FirstName,
+    [property: JsonPropertyName("lastName")] string LastName,
     [property: JsonPropertyName("phone")] Phone Phone,
     [property: JsonPropertyName("locale")] string Locale);
 
