@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using JetBrains.Annotations;
+using Wiknap.PayNow.Converters;
 
 namespace Wiknap.PayNow.Model;
 
@@ -9,7 +10,7 @@ public sealed record PostRefundResponse(
     [property: JsonPropertyName("status")] PostRefundStatus? Status);
 
 [PublicAPI]
-[JsonConverter(typeof(PostRefundStatus))]
+[JsonConverter(typeof(PostRefundStatusJsonConverter))]
 public enum PostRefundStatus
 {
     New,
