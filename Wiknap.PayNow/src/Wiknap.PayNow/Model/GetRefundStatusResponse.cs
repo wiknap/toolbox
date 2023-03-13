@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using JetBrains.Annotations;
+using Wiknap.PayNow.Converters;
 
 namespace Wiknap.PayNow.Model;
 
@@ -10,19 +11,21 @@ public sealed record GetRefundStatusResponse(
     [property: JsonPropertyName("failureReason")] GetFailureReason? FailureReason);
 
 [PublicAPI]
+[JsonConverter(typeof(GetRefundStatusJsonConverter))]
 public enum GetRefundStatus
 {
-    NEW,
-    PENDING,
-    SUCCESSFUL,
-    FAILED,
-    CANCELLED
+    New,
+    Pending,
+    Successful,
+    Failed,
+    Cancelled
 }
 
 [PublicAPI]
+[JsonConverter(typeof(GetFailureReasonJsonConverter))]
 public enum GetFailureReason
 {
-    CARD_BALANCE_ERROR,
-    BUYER_ACCOUNT_CLOSED,
-    OTHER
+    CardBalanceError,
+    BuyerAccountClosed,
+    Other
 }

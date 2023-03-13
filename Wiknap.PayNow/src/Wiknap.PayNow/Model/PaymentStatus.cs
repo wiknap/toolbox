@@ -1,15 +1,18 @@
-﻿using JetBrains.Annotations;
+﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
+using Wiknap.PayNow.Converters;
 
 namespace Wiknap.PayNow.Model;
 
 [PublicAPI]
+[JsonConverter(typeof(PaymentStatusJsonConverter))]
 public enum PaymentStatus
 {
-    NEW,
-    PENDING,
-    CONFIRMED,
-    REJECTED,
-    ERROR,
-    ABANDONED,
-    EXPIRED
+    New,
+    Pending,
+    Confirmed,
+    Rejected,
+    Error,
+    Abandoned,
+    Expired
 }

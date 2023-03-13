@@ -9,9 +9,10 @@ public sealed record PostRefundResponse(
     [property: JsonPropertyName("status")] PostRefundStatus? Status);
 
 [PublicAPI]
+[JsonConverter(typeof(PostRefundStatus))]
 public enum PostRefundStatus
 {
-    NEW,
-    PENDING,
-    SUCCESSFUL
+    New,
+    Pending,
+    Successful
 }

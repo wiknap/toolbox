@@ -1,7 +1,6 @@
 ﻿using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using JetBrains.Annotations;
 using Wiknap.PayNow.Exceptions;
 using Wiknap.PayNow.Model;
@@ -15,11 +14,6 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
     private readonly Encoding encoding = Encoding.UTF8;
     private readonly HmacSha256Calculator hmacSha256Calculator;
     private readonly HttpClient httpClient;
-
-    private readonly JsonSerializerOptions serializerOptions = new()
-    {
-        Converters = { new JsonStringEnumConverter() }
-    };
 
     public PayNowClient(HttpClient httpClient, IPayNowConfiguration configuration)
     {
@@ -41,10 +35,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             builder.ToString(),
             paymentRequest, ct);
 
-        if (response is null)
-            throw new EmptyResponseException();
-
-        return response;
+        return response ?? throw new EmptyResponseException();
     }
 
     public async Task<GetPaymentStatusResponse> GetPaymentStatusAsync(string paymentId, CancellationToken ct = default)
@@ -58,10 +49,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         var response =
             await SendAndDeserializeAsync<GetPaymentStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
 
-        if (response is null)
-            throw new EmptyResponseException();
-
-        return response;
+        return response ?? throw new EmptyResponseException();
     }
 
     public async Task<GetPaymentMethodsResponse> GetPaymentMethodsAsync(Currency currency = Currency.PLN,
@@ -75,10 +63,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         var response =
             await SendAndDeserializeAsync<GetPaymentMethodsResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
 
-        if (response is null)
-            throw new EmptyResponseException();
-
-        return response;
+        return response ?? throw new EmptyResponseException();
     }
 
     public async Task<PostRefundResponse> PostRefundRequestAsync(string paymentId, PostRefundRequest refundRequest,
@@ -96,10 +81,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             refundRequest,
             ct);
 
-        if (response is null)
-            throw new EmptyResponseException();
-
-        return response;
+        return response ?? throw new EmptyResponseException();
     }
 
     public async Task<GetRefundStatusResponse> GetRefundStatusAsync(string refundId, CancellationToken ct = default)
@@ -113,10 +95,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         var response =
             await SendAndDeserializeAsync<GetRefundStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
 
-        if (response is null)
-            throw new EmptyResponseException();
-
-        return response;
+        return response ?? throw new EmptyResponseException();
     }
 
     private static PayNowApiPathBuilder GetBuilder() => new();
@@ -128,7 +107,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
 
         if (content != null)
         {
-            var serializedContent = JsonSerializer.Serialize(content, serializerOptions);
+            var serializedContent = JsonSerializer.Serialize(content);
             request.Content = new StringContent(serializedContent, encoding, MediaTypeNames.Application.Json);
 
             request.Headers.Add(PayNowConstants.HeadersNames.Signature,
@@ -141,7 +120,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         {
             await using var contentStream = await response.Content.ReadAsStreamAsync(ct);
             {
-                return await JsonSerializer.DeserializeAsync<T>(contentStream, serializerOptions, ct);
+                return await JsonSerializer.DeserializeAsync<T>(contentStream, cancellationToken: ct);
             }
         }
     }
