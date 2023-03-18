@@ -7,6 +7,8 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>Recommended</AnalysisMode>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <Authors>Wiknap</Authors>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
