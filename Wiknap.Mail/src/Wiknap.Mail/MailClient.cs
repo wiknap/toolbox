@@ -42,13 +42,15 @@ public class MailClient : IMailClient
         using var client = await GetImapClientAsync(ct);
         await client.Inbox.OpenAsync(FolderAccess.ReadOnly, ct);
         var searchResult = await client.Inbox.SearchAsync(GetSearchQuery(parameters), ct);
-
         if (searchResult.Count == 0)
             return null;
 
         var id = searchResult.Last();
         var message = await client.Inbox.GetMessageAsync(id, ct);
-        return message.GetMessageContent(contentType);
+        if (parameters.DeliveredAfter.HasValue && message.Date <= new DateTimeOffset(parameters.DeliveredAfter.Value))
+            return null;
+
+        return message?.GetMessageContent(contentType);
     }
 
     private static SearchQuery GetSearchQuery(SearchParameters parameters)
@@ -65,7 +67,6 @@ public class MailClient : IMailClient
             queries.Add(SearchQuery.DeliveredAfter(parameters.DeliveredAfter.Value));
 
         SearchQuery? resultQuery = null;
-
         foreach (var query in queries)
         {
             if (resultQuery is null)
