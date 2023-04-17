@@ -10,6 +10,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Configuration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Tests", "test\Wiknap.PayNow.Tests\Wiknap.PayNow.Tests.csproj", "{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92BFB607-617D-48AC-9A09-B91D09D199E1}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

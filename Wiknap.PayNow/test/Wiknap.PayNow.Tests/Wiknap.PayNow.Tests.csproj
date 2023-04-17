@@ -5,6 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
+        <EnableNETAnalyzers>false</EnableNETAnalyzers>
+        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
     <ItemGroup>
