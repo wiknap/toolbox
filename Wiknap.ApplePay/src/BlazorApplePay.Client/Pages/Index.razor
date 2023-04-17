@@ -1,0 +1,13 @@
+﻿@page "/"
+@using Wiknap.ApplePay.Model
+
+<h1>Hello Apple Pay!</h1>
+
+<ApplePayButton PaymentRequest="@paymentRequest" />
+
+@code {
+
+    private readonly PaymentRequest paymentRequest = new("US", "USD", new[] { "visa", "masterCard", "amex", "discover" },
+        new[] { "supports3DS" }, new LineItem("Label", 10));
+
+}

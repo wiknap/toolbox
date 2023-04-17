@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33513.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApplePay.Server", "src\BlazorApplePay.Server\BlazorApplePay.Server.csproj", "{D9BAB3BA-6C49-4B5C-8B6F-DB7B6FE01AC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApplePay.Client", "src\BlazorApplePay.Client\BlazorApplePay.Client.csproj", "{B288D0E2-B3B9-42EF-9ADB-1351C3C0692A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2EA6DEA-7F4F-47CF-A4B3-E69A187FCC16}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.ApplePay.Blazor", "src\Wiknap.ApplePay.Blazor\Wiknap.ApplePay.Blazor.csproj", "{387E4E2A-7877-45DF-B840-F4FA8005C834}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.ApplePay", "src\Wiknap.ApplePay\Wiknap.ApplePay.csproj", "{540333EA-980C-40F5-AB91-B9410B5F80EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.ApplePay.Model", "src\Wiknap.ApplePay.Model\Wiknap.ApplePay.Model.csproj", "{45B388D6-60FB-4E6D-BDE0-6D2238C23D93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9BAB3BA-6C49-4B5C-8B6F-DB7B6FE01AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BAB3BA-6C49-4B5C-8B6F-DB7B6FE01AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BAB3BA-6C49-4B5C-8B6F-DB7B6FE01AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BAB3BA-6C49-4B5C-8B6F-DB7B6FE01AC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B288D0E2-B3B9-42EF-9ADB-1351C3C0692A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B288D0E2-B3B9-42EF-9ADB-1351C3C0692A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B288D0E2-B3B9-42EF-9ADB-1351C3C0692A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B288D0E2-B3B9-42EF-9ADB-1351C3C0692A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387E4E2A-7877-45DF-B840-F4FA8005C834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387E4E2A-7877-45DF-B840-F4FA8005C834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387E4E2A-7877-45DF-B840-F4FA8005C834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387E4E2A-7877-45DF-B840-F4FA8005C834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{540333EA-980C-40F5-AB91-B9410B5F80EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{540333EA-980C-40F5-AB91-B9410B5F80EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{540333EA-980C-40F5-AB91-B9410B5F80EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{540333EA-980C-40F5-AB91-B9410B5F80EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45B388D6-60FB-4E6D-BDE0-6D2238C23D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45B388D6-60FB-4E6D-BDE0-6D2238C23D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45B388D6-60FB-4E6D-BDE0-6D2238C23D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45B388D6-60FB-4E6D-BDE0-6D2238C23D93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

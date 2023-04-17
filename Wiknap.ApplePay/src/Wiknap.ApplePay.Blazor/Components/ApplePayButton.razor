@@ -1,0 +1,54 @@
+﻿@using System.Net.Http.Json
+@using System.Text.Json
+@using Microsoft.JSInterop
+@using Wiknap.ApplePay.Model
+
+<apple-pay-button id="@id" buttonstyle="black" type="buy" locale="en-GB"></apple-pay-button>
+
+@code {
+
+    [Inject]
+    private IApplePayJs ApplePayJs { get; set; } = default!;
+
+    [Inject]
+    private IApplePayClient ApplePayClient { get; set; } = default!;
+
+    [Parameter]
+    public PaymentRequest? PaymentRequest { get; set; }
+
+    private DotNetObjectReference<ApplePayButton> objRef = default!;
+    private string id = $"id-{Guid.NewGuid().ToString()}";
+
+    protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ApplePayJs.AddOnClickAsync(id, objRef);
+    }
+
+    [JSInvokable]
+    public async Task OnClickAsync()
+    {
+        if (PaymentRequest is null)
+            return;
+
+        await ApplePayJs.CreateSessionAsync(new Session(PaymentRequest), objRef);
+    }
+
+    [JSInvokable]
+    public async Task<JsonElement> OnValidateMerchantAsync(string validationUrl)
+    {
+        return await ApplePayClient.ValidateMerchantAsync(validationUrl);
+    }
+
+    [JSInvokable]
+    public async Task<bool> OnPaymentAuthorization(string token)
+    {
+        return await ApplePayClient.AuthorizePaymentAsync(token);
+    }
+
+}
