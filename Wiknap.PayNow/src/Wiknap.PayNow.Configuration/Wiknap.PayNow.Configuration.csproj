@@ -4,17 +4,9 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <AnalysisMode>Recommended</AnalysisMode>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <Authors>Wiknap</Authors>
         <LangVersion>default</LangVersion>
     </PropertyGroup>
-
-    <PropertyGroup>
-        <Authors>Wiknap</Authors>
-    </PropertyGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />

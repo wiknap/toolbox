@@ -1,0 +1,8 @@
+<Project>
+    <PropertyGroup>
+        <Authors>Wiknap</Authors>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>Recommended</AnalysisMode>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    </PropertyGroup>
+</Project>
