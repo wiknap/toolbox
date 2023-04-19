@@ -7,7 +7,17 @@
 
 @code {
 
-    private readonly PaymentRequest paymentRequest = new("US", "USD", new[] { "visa", "masterCard", "amex", "discover" },
-        new[] { "supports3DS" }, new LineItem("Label", 10));
+    private readonly PaymentRequest paymentRequest = new(
+        new [] { MerchantCapability.supports3DS },
+        new[] { "visa", "masterCard", "amex", "discover" },
+        "US",
+        "USD", 
+        new LineItem("Label", 10),
+        ShippingMethods: new []
+        {
+            new ShippingMethod("123", "123", "123", "123"),
+            new ShippingMethod("1234", "1234", "1234", "1234")
+        },
+        RequiredBillingContactFields: new HashSet<ContactField> { ContactField.email, ContactField.name });
 
 }

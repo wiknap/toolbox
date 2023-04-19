@@ -3,7 +3,7 @@
 @using Microsoft.JSInterop
 @using Wiknap.ApplePay.Model
 
-<apple-pay-button id="@id" buttonstyle="black" type="buy" locale="en-GB"></apple-pay-button>
+<apple-pay-button @ref="@elementRef" buttonstyle="black" type="buy" locale="en-GB"></apple-pay-button>
 
 @code {
 
@@ -17,7 +17,7 @@
     public PaymentRequest? PaymentRequest { get; set; }
 
     private DotNetObjectReference<ApplePayButton> objRef = default!;
-    private string id = $"id-{Guid.NewGuid().ToString()}";
+    private ElementReference elementRef;
 
     protected override void OnInitialized()
     {
@@ -27,7 +27,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            await ApplePayJs.AddOnClickAsync(id, objRef);
+            await ApplePayJs.AddOnClickAsync(elementRef, objRef);
     }
 
     [JSInvokable]

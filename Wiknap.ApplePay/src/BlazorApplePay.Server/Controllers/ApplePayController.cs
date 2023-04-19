@@ -25,22 +25,15 @@ public class ApplePayController
     public async Task<object> StartSession([FromBody] string validationUrl, [FromHeader(Name = "Host")] string host,
         CancellationToken cancellationToken)
     {
-        var request = new MerchantSessionRequest
-        {
-            DisplayName = "Apple Pay",
-            Initiative = "web",
-            InitiativeContext = host,
-            MerchantIdentifier = certificate.GetMerchantIdentifier(),
-        };
-
+        var request = new MerchantSessionRequest("Apple Pay", "web", host, certificate.GetMerchantIdentifier());
         var merchantSession = await applePayClient.GetMerchantSessionAsync(validationUrl, request, cancellationToken);
         return merchantSession.RootElement;
     }
 
     [HttpPost("payment")]
-    public async Task<bool> Payment([FromBody] string token)
+    public async Task<bool> Payment([FromBody] string token, CancellationToken cancellationToken)
     {
         return await adyenClient.PostPaymentAsync(new PaymentRequest(new Amount("USD", 1000), Guid.NewGuid().ToString(),
-            new PaymentMethod("applepay", token), "https://app-applepay.azurewebsites.net/", "WiktorNapieralaECOM"));
+            new PaymentMethod("applepay", token), "https://app-applepay.azurewebsites.net/", "WiktorNapieralaECOM"), cancellationToken);
     }
 }
