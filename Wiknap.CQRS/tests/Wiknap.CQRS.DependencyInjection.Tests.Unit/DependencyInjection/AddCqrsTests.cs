@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using Wiknap.CQRS.DependencyInjection;
 using Shouldly;
 using Xunit;
 
-namespace Wiknap.CQRS.Tests.Unit.DependencyInjection;
+namespace Wiknap.CQRS.DependencyInjection.Tests.Unit.DependencyInjection;
 
 public sealed class AddCqrsTests
 {
@@ -20,8 +19,8 @@ public sealed class AddCqrsTests
         var queryDispatcher = p.GetService<IQueryDispatcher>();
         var callingAssemblyCommandHandler = p.GetService<ICommandHandler<TestCommand>>();
         var callingAssemblyQueryHandler = p.GetService<IQueryHandler<TestQuery, int>>();
-        var referenceAssemblyCommandHandler = p.GetService<ICommandHandler<Unit.TestProject.TestCommand>>();
-        var referenceAssemblyQueryHandler = p.GetService<IQueryHandler<Unit.TestProject.TestQuery, int>>();
+        var referenceAssemblyCommandHandler = p.GetService<ICommandHandler<Wiknap.CQRS.Tests.Unit.TestProject.TestCommand>>();
+        var referenceAssemblyQueryHandler = p.GetService<IQueryHandler<Wiknap.CQRS.Tests.Unit.TestProject.TestQuery, int>>();
 
         // Assert
         commandDispatcher.ShouldNotBeNull();
@@ -39,12 +38,12 @@ public sealed class AddCqrsTests
         var sc = new ServiceCollection();
 
         // Act
-        sc.AddCqrs(typeof(Unit.TestProject.TestCommand).Assembly);
+        sc.AddCqrs(typeof(Wiknap.CQRS.Tests.Unit.TestProject.TestCommand).Assembly);
         var p = sc.BuildServiceProvider();
         var callingAssemblyCommandHandler = p.GetService<ICommandHandler<TestCommand>>();
         var callingAssemblyQueryHandler = p.GetService<IQueryHandler<TestQuery, int>>();
-        var referenceAssemblyCommandHandler = p.GetService<ICommandHandler<Unit.TestProject.TestCommand>>();
-        var referenceAssemblyQueryHandler = p.GetService<IQueryHandler<Unit.TestProject.TestQuery, int>>();
+        var referenceAssemblyCommandHandler = p.GetService<ICommandHandler<Wiknap.CQRS.Tests.Unit.TestProject.TestCommand>>();
+        var referenceAssemblyQueryHandler = p.GetService<IQueryHandler<Wiknap.CQRS.Tests.Unit.TestProject.TestQuery, int>>();
 
         // Assert
         callingAssemblyCommandHandler.ShouldBeNull();

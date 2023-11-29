@@ -12,7 +12,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Wiknap.CQRS.DependencyInjection\Wiknap.CQRS.DependencyInjection.csproj" />
-        <ProjectReference Include="..\..\src\Wiknap.CQRS\Wiknap.CQRS.csproj" />
         <ProjectReference Include="..\Wiknap.CQRS.Tests.Unit.TestProject\Wiknap.CQRS.Tests.Unit.TestProject.csproj" />
     </ItemGroup>
 
