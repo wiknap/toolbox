@@ -1,4 +1,4 @@
-﻿namespace Wiknap.CQRS.Tests.Unit;
+﻿namespace Wiknap.CQRS.DependencyInjection.Tests.Unit;
 
 public class TestCommand : ICommand
 {

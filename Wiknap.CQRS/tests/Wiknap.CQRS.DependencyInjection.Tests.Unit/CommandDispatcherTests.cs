@@ -6,7 +6,7 @@ using NSubstitute;
 
 using Xunit;
 
-namespace Wiknap.CQRS.Tests.Unit;
+namespace Wiknap.CQRS.DependencyInjection.Tests.Unit;
 
 public sealed class CommandDispatcherTests
 {
@@ -17,7 +17,7 @@ public sealed class CommandDispatcherTests
         var sc = new ServiceCollection();
         var commandHandler = Substitute.For<ICommandHandler<TestCommand>>();
         sc.AddSingleton<ICommandHandler<TestCommand>>(_ => commandHandler);
-        var commandDispatcher = new CommandDispatcher(sc.BuildServiceProvider());
+        var commandDispatcher = new CQRS.DependencyInjection.CommandDispatcher(sc.BuildServiceProvider());
         var command = new TestCommand();
 
         // Act

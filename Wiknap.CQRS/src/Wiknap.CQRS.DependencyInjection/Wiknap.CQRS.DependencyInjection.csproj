@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="Wiknap.CQRS.Tests.Unit" />
+        <InternalsVisibleTo Include="Wiknap.CQRS.DependencyInjection.Tests.Unit" />
     </ItemGroup>
 
     <ItemGroup>

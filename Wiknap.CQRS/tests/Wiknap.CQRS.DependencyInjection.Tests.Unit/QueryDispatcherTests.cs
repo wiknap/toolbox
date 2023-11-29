@@ -8,7 +8,7 @@ using Shouldly;
 
 using Xunit;
 
-namespace Wiknap.CQRS.Tests.Unit;
+namespace Wiknap.CQRS.DependencyInjection.Tests.Unit;
 
 public sealed class QueryDispatcherTests
 {
@@ -22,7 +22,7 @@ public sealed class QueryDispatcherTests
         var queryHandler = Substitute.For<IQueryHandler<TestQuery, int>>();
         queryHandler.HandleAsync(query).Returns(queryResult);
         sc.AddSingleton<IQueryHandler<TestQuery, int>>(_ => queryHandler);
-        var queryDispatcher = new QueryDispatcher(sc.BuildServiceProvider());
+        var queryDispatcher = new CQRS.DependencyInjection.QueryDispatcher(sc.BuildServiceProvider());
 
         // Act
         var result = await queryDispatcher.DispatchAsync<TestQuery, int>(query);

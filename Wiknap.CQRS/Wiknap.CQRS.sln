@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{92C13679
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.CQRS.Tests.Unit.TestProject", "tests\Wiknap.CQRS.Tests.Unit.TestProject\Wiknap.CQRS.Tests.Unit.TestProject.csproj", "{6EA0CFDE-02A9-4B6C-984B-7E22A84F5FC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.CQRS.Tests.Unit", "tests\Wiknap.CQRS.Tests.Unit\Wiknap.CQRS.Tests.Unit.csproj", "{210FDED2-8F46-4DC2-9A73-3AF630760B0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.CQRS.DependencyInjection.Tests.Unit", "tests\Wiknap.CQRS.DependencyInjection.Tests.Unit\Wiknap.CQRS.DependencyInjection.Tests.Unit.csproj", "{210FDED2-8F46-4DC2-9A73-3AF630760B0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
