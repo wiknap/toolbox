@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="Scrutor" Version="4.2.2" />
-        <PackageReference Include="Wiknap.CQRS" Version="1.0.4" />
+        <PackageReference Include="Wiknap.CQRS" Version="1.0.7" />
     </ItemGroup>
 
 </Project>
