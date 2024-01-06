@@ -1,6 +1,6 @@
-namespace Wiknap.Mail;
+namespace Wiknap.Email;
 
-public interface IMailClientConfiguration
+public interface IEmailClientConfiguration
 {
     public string SmtpHost { get; }
     public int SmtpPort { get; }

@@ -5,21 +5,21 @@ using MailKit.Net.Smtp;
 using MailKit.Search;
 using MimeKit;
 
-namespace Wiknap.Mail;
+namespace Wiknap.Email;
 
 [PublicAPI]
-public class MailClient : IMailClient
+public class EmailClient : IEmailClient
 {
-    private readonly IMailClientConfiguration configuration;
+    private readonly IEmailClientConfiguration configuration;
     private readonly MailboxAddress senderMailboxAddress;
 
-    public MailClient(IMailClientConfiguration configuration)
+    public EmailClient(IEmailClientConfiguration configuration)
     {
         this.configuration = configuration;
         senderMailboxAddress = new MailboxAddress(this.configuration.SenderName, this.configuration.Login);
     }
 
-    public async Task SendMailAsync(string mailTo, string subject, string message, bool isHtml = false,
+    public async Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
         var mimeMessage = new MimeMessage();
@@ -36,8 +36,8 @@ public class MailClient : IMailClient
         await client.DisconnectAsync(true, ct);
     }
 
-    public async Task<string?> GetMailContentAsync(SearchParameters parameters,
-        MailContentType? contentType = null, CancellationToken ct = default)
+    public async Task<string?> GetEmailContentAsync(SearchParameters parameters,
+        EmailContentType? contentType = null, CancellationToken ct = default)
     {
         using var client = await GetImapClientAsync(ct);
         await client.Inbox.OpenAsync(FolderAccess.ReadOnly, ct);
