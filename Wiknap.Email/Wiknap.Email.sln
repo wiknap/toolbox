@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution Items", ".solutio
 		..\Directory.Build.props = ..\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.Email.DependencyInjection", "src\Wiknap.Email.DependencyInjection\Wiknap.Email.DependencyInjection.csproj", "{1C691BD9-3C29-4030-976B-D3DFE28FA7B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.Email.DependencyInjection.Tests.Unit", "tests\Wiknap.Email.DependencyInjection.Tests.Unit\Wiknap.Email.DependencyInjection.Tests.Unit.csproj", "{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,8 +27,18 @@ Global
 		{0D764346-980F-479F-8188-F1E077519F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D764346-980F-479F-8188-F1E077519F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D764346-980F-479F-8188-F1E077519F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C691BD9-3C29-4030-976B-D3DFE28FA7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C691BD9-3C29-4030-976B-D3DFE28FA7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C691BD9-3C29-4030-976B-D3DFE28FA7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C691BD9-3C29-4030-976B-D3DFE28FA7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0D764346-980F-479F-8188-F1E077519F58} = {6E4DAD3C-0090-4B1E-9244-B0E6F44AFAC8}
+		{1C691BD9-3C29-4030-976B-D3DFE28FA7B5} = {6E4DAD3C-0090-4B1E-9244-B0E6F44AFAC8}
+		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9} = {B9233DCD-162C-4704-8229-4FC97B56A2BD}
 	EndGlobalSection
 EndGlobal
