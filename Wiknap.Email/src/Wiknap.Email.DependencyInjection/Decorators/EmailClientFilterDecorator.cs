@@ -19,7 +19,7 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
     public Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
-        if (!IsExcluded(mailTo))
+        if (ShouldSend(mailTo))
             return emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct);
 
         logger.EmailExcluded(mailTo);
@@ -32,10 +32,35 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
         return emailClient.GetEmailContentAsync(parameters, contentType, ct);
     }
 
+    private bool ShouldSend(string mailTo)
+    {
+        if (IsIncluded(mailTo))
+            return true;
+
+        return !IsExcluded(mailTo);
+    }
+
     private bool IsExcluded(string mailTo)
     {
         if (configuration.ExcludeAll)
             return true;
+
+        foreach (var rule in configuration.Exclude)
+        {
+            if (rule.Validate(mailTo))
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool IsIncluded(string mailTo)
+    {
+        foreach (var rule in configuration.Include)
+        {
+            if (rule.Validate(mailTo))
+                return true;
+        }
 
         return false;
     }

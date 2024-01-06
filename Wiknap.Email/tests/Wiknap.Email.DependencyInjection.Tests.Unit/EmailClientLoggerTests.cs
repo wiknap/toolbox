@@ -61,7 +61,7 @@ public sealed class EmailClientLoggerTests
         records.ShouldContain(r => r.Message == "Searching for email");
         records.ShouldContain(r => r.Message == "Email found");
     }
-    
+
     [Fact]
     public async Task Give_NonExistingSearchParameters_When_GetEmailContentAsync_ShouldLog()
     {

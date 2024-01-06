@@ -51,6 +51,119 @@ public sealed class EmailClientFilterTests
     }
 
     [Fact]
+    public async Task Given_ConfigurationWithExcludeAllTrueAndIncludeEmailRule_When_SendEmailAsync_ShouldSend()
+    {
+        // Arrange
+        var ec = Substitute.For<IEmailClient>();
+        var faker = new Faker();
+        var email = faker.Internet.Email();
+        var c = Substitute.For<IEmailFilterConfiguration>();
+        c.ExcludeAll.Returns(true);
+        c.Include.Returns(new[] { new EmailRule(EmailRuleType.Email, email) });
+        var l = new FakeLogger<EmailClientFilterDecorator>();
+        var filter = new EmailClientFilterDecorator(ec, c, l);
+        var subject = faker.Lorem.Word();
+        var content = faker.Lorem.Sentence();
+
+        // Act
+        await filter.SendEmailAsync(email, subject, content);
+
+        //Assert
+        await ec.Received(1).SendEmailAsync(email, subject, content);
+    }
+
+    [Fact]
+    public async Task Given_ConfigurationWithExcludeAllTrueAndIncludeDomainRule_When_SendEmailAsync_ShouldSend()
+    {
+        // Arrange
+        var ec = Substitute.For<IEmailClient>();
+        var faker = new Faker();
+        const string domain = "domain.pl";
+        const string email = $"email@{domain}";
+        var c = Substitute.For<IEmailFilterConfiguration>();
+        c.ExcludeAll.Returns(true);
+        c.Include.Returns(new[] { new EmailRule(EmailRuleType.Domain, domain) });
+        var l = new FakeLogger<EmailClientFilterDecorator>();
+        var filter = new EmailClientFilterDecorator(ec, c, l);
+        var subject = faker.Lorem.Word();
+        var content = faker.Lorem.Sentence();
+
+        // Act
+        await filter.SendEmailAsync(email, subject, content);
+
+        //Assert
+        await ec.Received(1).SendEmailAsync(email, subject, content);
+    }
+
+    [Fact]
+    public async Task Given_ConfigurationWithExcludeAllFalseAndExcludeDomainRule_When_SendEmailAsync_ShouldNotSend()
+    {
+        // Arrange
+        var ec = Substitute.For<IEmailClient>();
+        var faker = new Faker();
+        const string domain = "domain.pl";
+        const string email = $"email@{domain}";
+        var c = Substitute.For<IEmailFilterConfiguration>();
+        c.Include.Returns(Enumerable.Empty<EmailRule>());
+        c.Exclude.Returns(new[] { new EmailRule(EmailRuleType.Domain, domain) });
+        var l = new FakeLogger<EmailClientFilterDecorator>();
+        var filter = new EmailClientFilterDecorator(ec, c, l);
+        var subject = faker.Lorem.Word();
+        var content = faker.Lorem.Sentence();
+
+        // Act
+        await filter.SendEmailAsync(email, subject, content);
+
+        //Assert
+        await ec.DidNotReceive().SendEmailAsync(email, subject, content);
+    }
+
+    [Fact]
+    public async Task Given_ConfigurationWithExcludeAllFalseAndExcludeEmailRule_When_SendEmailAsync_ShouldSend()
+    {
+        // Arrange
+        var ec = Substitute.For<IEmailClient>();
+        var faker = new Faker();
+        var email = faker.Internet.Email();
+        var c = Substitute.For<IEmailFilterConfiguration>();
+        c.Include.Returns(Enumerable.Empty<EmailRule>());
+        c.Exclude.Returns(new[] { new EmailRule(EmailRuleType.Email, email) });
+        var l = new FakeLogger<EmailClientFilterDecorator>();
+        var filter = new EmailClientFilterDecorator(ec, c, l);
+        var subject = faker.Lorem.Word();
+        var content = faker.Lorem.Sentence();
+
+        // Act
+        await filter.SendEmailAsync(email, subject, content);
+
+        //Assert
+        await ec.DidNotReceive().SendEmailAsync(email, subject, content);
+    }
+
+    [Fact]
+    public async Task Given_ConfigurationWithExcludeAllFalseAndExcludeDomainRuleAndIncludeEmailRule_When_SendEmailAsync_ShouldSend()
+    {
+        // Arrange
+        var ec = Substitute.For<IEmailClient>();
+        var faker = new Faker();
+        const string domain = "domain.pl";
+        const string email = $"email@{domain}";
+        var c = Substitute.For<IEmailFilterConfiguration>();
+        c.Include.Returns(new[] { new EmailRule(EmailRuleType.Email, email) });
+        c.Exclude.Returns(new[] { new EmailRule(EmailRuleType.Domain, domain) });
+        var l = new FakeLogger<EmailClientFilterDecorator>();
+        var filter = new EmailClientFilterDecorator(ec, c, l);
+        var subject = faker.Lorem.Word();
+        var content = faker.Lorem.Sentence();
+
+        // Act
+        await filter.SendEmailAsync(email, subject, content);
+
+        //Assert
+        await ec.Received(1).SendEmailAsync(email, subject, content);
+    }
+
+    [Fact]
     public async Task When_GetEmailContentAsync_ShouldReturnContent()
     {
         // Arrange
