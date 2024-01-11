@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+
 using Wiknap.PayNow.Model;
+
 using Xunit;
 
 namespace Wiknap.PayNow.Tests;
@@ -47,7 +49,7 @@ public class DeserializationTests
     public void PostRefundRequestTestWithNull_ShouldDeserialize()
     {
         const string json = @"{" +
-                            "    \"amount\": 12"+
+                            "    \"amount\": 12" +
                             "}";
 
         var deserialized = JsonSerializer.Deserialize<PostRefundRequest>(json);

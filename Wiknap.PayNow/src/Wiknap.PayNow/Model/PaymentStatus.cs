@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+
 using JetBrains.Annotations;
+
 using Wiknap.PayNow.Converters;
 
 namespace Wiknap.PayNow.Model;

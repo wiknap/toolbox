@@ -15,8 +15,5 @@ internal sealed class HmacSha256Calculator : IDisposable
 
     private static string ConvertToBase64String(byte[] byteArray) => Convert.ToBase64String(byteArray);
 
-    public void Dispose()
-    {
-        hmacSha256.Dispose();
-    }
+    public void Dispose() => hmacSha256.Dispose();
 }

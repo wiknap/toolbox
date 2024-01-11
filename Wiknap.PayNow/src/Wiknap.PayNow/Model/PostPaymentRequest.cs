@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.Json.Serialization;
+
 using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Model;
@@ -58,8 +59,10 @@ public sealed record PostPaymentRequest
 [PublicAPI]
 public sealed record Buyer(
     [property: JsonPropertyName("email")] string Email,
-    [property: JsonPropertyName("firstName")] string FirstName,
-    [property: JsonPropertyName("lastName")] string LastName,
+    [property: JsonPropertyName("firstName")]
+    string FirstName,
+    [property: JsonPropertyName("lastName")]
+    string LastName,
     [property: JsonPropertyName("phone")] Phone Phone,
     [property: JsonPropertyName("locale")] string Locale);
 

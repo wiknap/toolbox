@@ -1,7 +1,9 @@
 ﻿using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+
 using JetBrains.Annotations;
+
 using Wiknap.PayNow.Exceptions;
 using Wiknap.PayNow.Model;
 using Wiknap.PayNow.Path;
@@ -125,8 +127,5 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        hmacSha256Calculator.Dispose();
-    }
+    public void Dispose() => hmacSha256Calculator.Dispose();
 }

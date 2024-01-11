@@ -1,14 +1,18 @@
 ﻿using System.Text.Json.Serialization;
+
 using JetBrains.Annotations;
+
 using Wiknap.PayNow.Converters;
 
 namespace Wiknap.PayNow.Model;
 
 [PublicAPI]
 public sealed record GetRefundStatusResponse(
-    [property: JsonPropertyName("refundId")] string RefundId,
+    [property: JsonPropertyName("refundId")]
+    string RefundId,
     [property: JsonPropertyName("status")] GetRefundStatus? Status,
-    [property: JsonPropertyName("failureReason")] GetFailureReason? FailureReason);
+    [property: JsonPropertyName("failureReason")]
+    GetFailureReason? FailureReason);
 
 [PublicAPI]
 [JsonConverter(typeof(GetRefundStatusJsonConverter))]

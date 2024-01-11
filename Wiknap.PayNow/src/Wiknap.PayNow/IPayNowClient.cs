@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+
 using Wiknap.PayNow.Model;
 
 namespace Wiknap.PayNow;

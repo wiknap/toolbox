@@ -2,7 +2,6 @@
 
 namespace Wiknap.PayNow.Path;
 
-
 internal interface IPayNowApiPaymentsPathBuilder
 {
     IPayNowApiPaymentPathBuilder AddPaymentPath(string paymentId);
