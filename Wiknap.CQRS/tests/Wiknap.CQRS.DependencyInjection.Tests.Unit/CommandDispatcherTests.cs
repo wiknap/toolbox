@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using Wiknap.CQRS.DependencyInjection;
-
 using NSubstitute;
 
 using Xunit;
@@ -17,7 +15,7 @@ public sealed class CommandDispatcherTests
         var sc = new ServiceCollection();
         var commandHandler = Substitute.For<ICommandHandler<TestCommand>>();
         sc.AddSingleton<ICommandHandler<TestCommand>>(_ => commandHandler);
-        var commandDispatcher = new CQRS.DependencyInjection.CommandDispatcher(sc.BuildServiceProvider());
+        var commandDispatcher = new CommandDispatcher(sc.BuildServiceProvider());
         var command = new TestCommand();
 
         // Act

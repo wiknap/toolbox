@@ -12,16 +12,16 @@ public static class Extensions
             .AddScoped<ICommandDispatcher, CommandDispatcher>()
             .AddScoped<IQueryDispatcher, QueryDispatcher>()
             .Scan(s => s.FromAssemblies(assembly)
-            .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime()
-            .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime());
+                .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+                .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
 
         return services;
     }
 
-    public static IServiceCollection AddCqrs(this IServiceCollection services)
-        => services.AddCqrs(Assembly.GetCallingAssembly());
+    public static IServiceCollection AddCqrs(this IServiceCollection services) =>
+        services.AddCqrs(Assembly.GetCallingAssembly());
 }

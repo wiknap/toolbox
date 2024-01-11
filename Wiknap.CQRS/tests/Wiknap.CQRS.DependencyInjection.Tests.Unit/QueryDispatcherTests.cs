@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using Wiknap.CQRS.DependencyInjection;
-
 using NSubstitute;
 
 using Shouldly;
@@ -22,7 +20,7 @@ public sealed class QueryDispatcherTests
         var queryHandler = Substitute.For<IQueryHandler<TestQuery, int>>();
         queryHandler.HandleAsync(query).Returns(queryResult);
         sc.AddSingleton<IQueryHandler<TestQuery, int>>(_ => queryHandler);
-        var queryDispatcher = new CQRS.DependencyInjection.QueryDispatcher(sc.BuildServiceProvider());
+        var queryDispatcher = new QueryDispatcher(sc.BuildServiceProvider());
 
         // Act
         var result = await queryDispatcher.DispatchAsync<TestQuery, int>(query);
