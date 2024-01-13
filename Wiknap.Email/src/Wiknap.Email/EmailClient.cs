@@ -19,12 +19,15 @@ public class EmailClient : IEmailClient
         senderMailboxAddress = new MailboxAddress(this.configuration.SenderName, this.configuration.Login);
     }
 
-    public async Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
+    public Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
+        CancellationToken ct = default)
+        => SendEmailAsync([new Recipient(mailTo)], subject, message, isHtml, ct);
+
+    public async Task SendEmailAsync(Recipient[] recipients, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
         var mimeMessage = new MimeMessage();
-        mimeMessage.From.Add(senderMailboxAddress);
-        mimeMessage.To.Add(new MailboxAddress(mailTo, mailTo));
+        mimeMessage.AddRecipients(recipients);
         mimeMessage.Subject = subject;
         mimeMessage.Body = new TextPart(isHtml ? "html" : "plain")
         {
