@@ -27,6 +27,7 @@ public class EmailClient : IEmailClient
         CancellationToken ct = default)
     {
         var mimeMessage = new MimeMessage();
+        mimeMessage.From.Add(senderMailboxAddress);
         mimeMessage.AddRecipients(recipients);
         mimeMessage.Subject = subject;
         mimeMessage.Body = new TextPart(isHtml ? "html" : "plain")
