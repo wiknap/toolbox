@@ -18,7 +18,16 @@ internal sealed class EmailClientLoggingDecorator : IEmailClient
     {
         logger.SendingEmail(mailTo);
         await emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct);
-        logger.SearchingEmail(mailTo);
+        logger.EmailSent(mailTo);
+    }
+
+    public async Task SendEmailAsync(Recipient[] recipients, string subject, string message, bool isHtml = false,
+        CancellationToken ct = default)
+    {
+        var emailsList = string.Join(',', recipients.Select(r => r.Email));
+        logger.SendingEmail(emailsList);
+        await emailClient.SendEmailAsync(recipients, subject, message, isHtml, ct);
+        logger.EmailSent(emailsList);
     }
 
     public async Task<string?> GetEmailContentAsync(SearchParameters parameters, EmailContentType? contentType = null,

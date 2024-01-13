@@ -8,7 +8,7 @@ public static partial class LoggerExtensions
     public static partial void SendingEmail(this ILogger logger, string email);
 
     [LoggerMessage(EventId = 2, Level = LogLevel.Trace, Message = "Email sent to {email}")]
-    public static partial void SearchingEmail(this ILogger logger, string email);
+    public static partial void EmailSent(this ILogger logger, string email);
 
     [LoggerMessage(EventId = 3, Level = LogLevel.Trace, Message = "Searching for email")]
     public static partial void SearchingEmail(this ILogger logger);

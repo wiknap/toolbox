@@ -26,6 +26,29 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
         return Task.CompletedTask;
     }
 
+    public Task SendEmailAsync(Recipient[] recipients, string subject, string message, bool isHtml = false,
+        CancellationToken ct = default)
+    {
+        {
+            var recipientsList = new List<Recipient>();
+
+            foreach (var recipient in recipients)
+            {
+                if (ShouldSend(recipient.Email))
+                {
+                    recipientsList.Add(recipient);
+                    continue;
+                }
+
+                logger.EmailExcluded(recipient.Email);
+            }
+
+            return recipientsList.Count > 0
+                ? emailClient.SendEmailAsync(recipientsList.ToArray(), subject, message, isHtml, ct)
+                : Task.CompletedTask;
+        }
+    }
+
     public Task<string?> GetEmailContentAsync(SearchParameters parameters, EmailContentType? contentType = null,
         CancellationToken ct = default)
     {
