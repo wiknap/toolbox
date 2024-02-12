@@ -30,7 +30,7 @@ public sealed class EmailClientLoggerTests
         var records = l.Collector.GetSnapshot();
         records.ShouldNotBeEmpty();
         records.Count.ShouldBe(2);
-        records.ShouldAllBe(r => r.Level == LogLevel.Trace);
+        records.ShouldAllBe(r => r.Level == LogLevel.Information);
         records.ShouldContain(r => r.Message == $"Sending email to {email}");
         records.ShouldContain(r => r.Message == $"Email sent to {email}");
     }
@@ -57,7 +57,7 @@ public sealed class EmailClientLoggerTests
         var records = l.Collector.GetSnapshot();
         records.ShouldNotBeEmpty();
         records.Count.ShouldBe(2);
-        records.ShouldAllBe(r => r.Level == LogLevel.Trace);
+        records.ShouldAllBe(r => r.Level == LogLevel.Information);
         records.ShouldContain(r => r.Message == "Searching for email");
         records.ShouldContain(r => r.Message == "Email found");
     }
@@ -83,7 +83,7 @@ public sealed class EmailClientLoggerTests
         var records = l.Collector.GetSnapshot();
         records.ShouldNotBeEmpty();
         records.Count.ShouldBe(2);
-        records.ShouldAllBe(r => r.Level == LogLevel.Trace);
+        records.ShouldAllBe(r => r.Level == LogLevel.Information);
         records.ShouldContain(r => r.Message == "Searching for email");
         records.ShouldContain(r => r.Message == "Email not found");
     }
