@@ -7,12 +7,17 @@ using Wiknap.PayNow.Converters;
 namespace Wiknap.PayNow.Model;
 
 [PublicAPI]
-public sealed record PostPaymentResponse(
-    [property: JsonPropertyName("redirectUrl")]
-    string RedirectUrl,
-    [property: JsonPropertyName("paymentId")]
-    string PaymentId,
-    [property: JsonPropertyName("status")] Status? Status);
+public sealed record PostPaymentResponse
+{
+    [JsonPropertyName("redirectUrl")]
+    public string? RedirectUrl { get; set; }
+
+    [JsonPropertyName("paymentId")]
+    public required string PaymentId { get; set; }
+
+    [JsonPropertyName("status")]
+    public required Status? Status { get; set; }
+}
 
 [PublicAPI]
 [JsonConverter(typeof(StatusJsonConverter))]
