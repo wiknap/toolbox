@@ -8,26 +8,16 @@ namespace Wiknap.PayNow.Model;
 [PublicAPI]
 public sealed record PostPaymentRequest
 {
-    [JsonIgnore]
-    public required decimal Amount
+    public PostPaymentRequest(decimal amount)
     {
-        get
-        {
-            var valueAsString = AmountAsInt.ToString(CultureInfo.InvariantCulture);
-            var valueWithComma = $"{valueAsString[..^2]},{valueAsString[^2..]}";
-            return decimal.Parse(valueWithComma, CultureInfo.InvariantCulture);
-        }
-        set
-        {
-            var valueAsString = $"{value:0.00}";
-            var valueNoComma = valueAsString.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator,
-                string.Empty);
-            AmountAsInt = int.Parse(valueNoComma, CultureInfo.InvariantCulture);
-        }
+        var valueAsString = $"{amount:0.00}";
+        var valueNoComma = valueAsString.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator,
+            string.Empty);
+        Amount = int.Parse(valueNoComma, CultureInfo.InvariantCulture);
     }
 
     [JsonPropertyName("amount")]
-    public int AmountAsInt { get; private set; }
+    public int Amount { get; private set; }
 
     [JsonPropertyName("currency")]
     public Currency? Currency { get; set; }

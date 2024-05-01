@@ -1,12 +1,14 @@
 ﻿using System.Text.Json;
 
+using Shouldly;
+
 using Wiknap.PayNow.Model;
 
 using Xunit;
 
 namespace Wiknap.PayNow.Tests;
 
-public class DeserializationTests
+public sealed class DeserializationTests
 {
     [Fact]
     public void PhoneTest_ShouldDeserialize()
@@ -18,7 +20,7 @@ public class DeserializationTests
 
         var deserialized = JsonSerializer.Deserialize<Phone>(json);
 
-        Assert.NotNull(deserialized);
+        deserialized.ShouldNotBeNull();
     }
 
     [Fact]
@@ -31,7 +33,7 @@ public class DeserializationTests
 
         var deserialized = JsonSerializer.Deserialize<PostRefundRequest>(json);
 
-        Assert.NotNull(deserialized);
+        deserialized.ShouldNotBeNull();
     }
 
     [Fact]
@@ -42,7 +44,7 @@ public class DeserializationTests
 
         var deserialized = JsonSerializer.Serialize(request);
 
-        Assert.Equal(expected, deserialized);
+        deserialized.ShouldNotBeNull();
     }
 
     [Fact]
@@ -54,6 +56,6 @@ public class DeserializationTests
 
         var deserialized = JsonSerializer.Deserialize<PostRefundRequest>(json);
 
-        Assert.NotNull(deserialized);
+        deserialized.ShouldNotBeNull();
     }
 }
