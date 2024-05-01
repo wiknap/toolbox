@@ -8,19 +8,8 @@ namespace Wiknap.PayNow.Model;
 [PublicAPI]
 public sealed record PostPaymentRequest
 {
-    public PostPaymentRequest(
-        decimal amount, Currency? currency, string externalId, string description, string continueUrl, Buyer buyer)
-    {
-        Amount = amount;
-        Currency = currency;
-        ExternalId = externalId;
-        Description = description;
-        ContinueUrl = continueUrl;
-        Buyer = buyer;
-    }
-
     [JsonIgnore]
-    public decimal Amount
+    public required decimal Amount
     {
         get
         {
@@ -28,7 +17,7 @@ public sealed record PostPaymentRequest
             var valueWithComma = $"{valueAsString[..^2]},{valueAsString[^2..]}";
             return decimal.Parse(valueWithComma, CultureInfo.InvariantCulture);
         }
-        private init
+        set
         {
             var valueAsString = $"{value:0.00}";
             var valueNoComma = valueAsString.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator,
@@ -38,35 +27,49 @@ public sealed record PostPaymentRequest
     }
 
     [JsonPropertyName("amount")]
-    public int AmountAsInt { get; private init; }
+    public int AmountAsInt { get; private set; }
 
     [JsonPropertyName("currency")]
-    public Currency? Currency { get; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("externalId")]
-    public string ExternalId { get; }
+    public required string ExternalId { get; set; }
 
     [JsonPropertyName("description")]
-    public string Description { get; }
+    public required string Description { get; set; }
 
     [JsonPropertyName("continueUrl")]
-    public string ContinueUrl { get; }
+    public string? ContinueUrl { get; set; }
 
     [JsonPropertyName("buyer")]
-    public Buyer Buyer { get; }
+    public required Buyer Buyer { get; set; }
 }
 
 [PublicAPI]
-public sealed record Buyer(
-    [property: JsonPropertyName("email")] string Email,
-    [property: JsonPropertyName("firstName")]
-    string FirstName,
-    [property: JsonPropertyName("lastName")]
-    string LastName,
-    [property: JsonPropertyName("phone")] Phone Phone,
-    [property: JsonPropertyName("locale")] string Locale);
+public sealed record Buyer
+{
+    [JsonPropertyName("email")]
+    public required string Email { get; set; }
+
+    [JsonPropertyName("firstName")]
+    public string? FirstName { get; set; }
+
+    [JsonPropertyName("lastName")]
+    public string? LastName { get; set; }
+
+    [JsonPropertyName("phone")]
+    public Phone? Phone { get; set; }
+
+    [JsonPropertyName("locale")]
+    public string? Locale { get; set; }
+}
 
 [PublicAPI]
-public sealed record Phone(
-    [property: JsonPropertyName("prefix")] string Prefix,
-    [property: JsonPropertyName("number")] string Number);
+public sealed record Phone
+{
+    [JsonPropertyName("prefix")]
+    public required string Prefix { get; set; }
+
+    [JsonPropertyName("number")]
+    public required string Number { get; set; }
+}

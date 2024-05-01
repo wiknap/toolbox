@@ -2,7 +2,7 @@
 
 namespace Wiknap.PayNow;
 
-internal sealed class HmacSha256Calculator : IDisposable
+public sealed class HmacSha256Calculator : IDisposable
 {
     private readonly HMACSHA256 hmacSha256;
 

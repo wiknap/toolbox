@@ -11,7 +11,7 @@ public class DeserializationTests
     [Fact]
     public void PhoneTest_ShouldDeserialize()
     {
-        const string json = @"{" +
+        const string json = "{" +
                             "    \"prefix\": \"+48\"," +
                             "    \"number\": \"666666666\" " +
                             "}";
@@ -24,7 +24,7 @@ public class DeserializationTests
     [Fact]
     public void PostRefundRequest_ShouldDeserialize()
     {
-        const string json = @"{" +
+        const string json = "{" +
                             "    \"amount\": 12," +
                             "    \"reason\": \"REFUND_BEFORE_14\"" +
                             "}";
@@ -48,7 +48,7 @@ public class DeserializationTests
     [Fact]
     public void PostRefundRequestTestWithNull_ShouldDeserialize()
     {
-        const string json = @"{" +
+        const string json = "{" +
                             "    \"amount\": 12" +
                             "}";
 

@@ -1,5 +1,3 @@
 ﻿namespace Wiknap.PayNow.Exceptions;
 
-internal sealed class EmptyResponseException : Exception
-{
-}
+internal sealed class EmptyResponseException : Exception;
