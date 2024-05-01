@@ -5,7 +5,11 @@ using JetBrains.Annotations;
 namespace Wiknap.PayNow.Model;
 
 [PublicAPI]
-public sealed record GetPaymentStatusResponse(
-    [property: JsonPropertyName("paymentId")]
-    string PaymentId,
-    [property: JsonPropertyName("status")] PaymentStatus? Status);
+public sealed record GetPaymentStatusResponse
+{
+    [JsonPropertyName("paymentId")]
+    public required string PaymentId { get; set; }
+
+    [JsonPropertyName("status")]
+    public required PaymentStatus Status { get; set; }
+}
