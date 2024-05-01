@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 
 namespace Wiknap.PayNow.Configuration;
 
-internal sealed class PayNowOptions
+public sealed class PayNowOptions
 {
     public const string SectionName = "PayNow";
 

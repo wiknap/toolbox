@@ -1,8 +1,8 @@
 ﻿namespace Wiknap.PayNow;
 
-internal static class PayNowConstants
+public static class PayNowConstants
 {
-    internal static class HeadersNames
+    public static class HeadersNames
     {
         public const string Signature = "Signature";
         public const string ApiKey = "Api-Key";
