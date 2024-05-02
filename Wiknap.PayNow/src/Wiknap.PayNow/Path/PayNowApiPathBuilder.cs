@@ -17,7 +17,7 @@ internal sealed class PayNowApiPathBuilder :
     public PayNowApiPathBuilder()
     {
         builder = new StringBuilder();
-        AppendPath("api");
+        AppendPath("v1");
     }
 
     public IPayNowApiPaymentsPathBuilder AddPaymentsPath()

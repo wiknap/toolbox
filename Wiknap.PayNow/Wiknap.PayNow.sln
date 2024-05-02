@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow", "src\Wiknap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Configuration", "src\Wiknap.PayNow.Configuration\Wiknap.PayNow.Configuration.csproj", "{57961E02-7E14-4545-BA82-91CB314D4064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Tests", "test\Wiknap.PayNow.Tests\Wiknap.PayNow.Tests.csproj", "{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.PayNow.Tests.Unit", "test\Wiknap.PayNow.Tests.Unit\Wiknap.PayNow.Tests.Unit.csproj", "{B5CBBF15-4824-445D-9AD9-54EA4D046EBC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92BFB607-617D-48AC-9A09-B91D09D199E1}"
 	ProjectSection(SolutionItems) = preProject

@@ -6,7 +6,7 @@ using Wiknap.PayNow.Model;
 
 using Xunit;
 
-namespace Wiknap.PayNow.Tests;
+namespace Wiknap.PayNow.Tests.Unit;
 
 public sealed class DeserializationTests
 {
@@ -21,6 +21,8 @@ public sealed class DeserializationTests
         var deserialized = JsonSerializer.Deserialize<Phone>(json);
 
         deserialized.ShouldNotBeNull();
+        deserialized.Prefix.ShouldBe("+48");
+        deserialized.Number.ShouldBe("666666666");
     }
 
     [Fact]
@@ -34,17 +36,8 @@ public sealed class DeserializationTests
         var deserialized = JsonSerializer.Deserialize<PostRefundRequest>(json);
 
         deserialized.ShouldNotBeNull();
-    }
-
-    [Fact]
-    public void PostRefundRequest_ShouldSerialize()
-    {
-        var request = new PostRefundRequest(20, RefundReason.RefundAfter14);
-        const string expected = "{\"amount\":20,\"reason\":\"REFUND_AFTER_14\"}";
-
-        var deserialized = JsonSerializer.Serialize(request);
-
-        deserialized.ShouldNotBeNull();
+        deserialized.Amount.ShouldBe(12);
+        deserialized.Reason.ShouldBe(RefundReason.RefundBefore14);
     }
 
     [Fact]
@@ -57,5 +50,7 @@ public sealed class DeserializationTests
         var deserialized = JsonSerializer.Deserialize<PostRefundRequest>(json);
 
         deserialized.ShouldNotBeNull();
+        deserialized.Amount.ShouldBe(12);
+        deserialized.Reason.ShouldBe(null);
     }
 }
