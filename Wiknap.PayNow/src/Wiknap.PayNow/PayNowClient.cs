@@ -35,7 +35,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         var response = await SendAndDeserializeAsync<PostPaymentResponse>(
             HttpMethod.Post,
             builder.ToString(),
-            paymentRequest, ct);
+            paymentRequest, ct).ConfigureAwait(false);
 
         return response ?? throw new EmptyResponseException();
     }
@@ -49,7 +49,8 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             .AddPaymentStatusPath();
 
         var response =
-            await SendAndDeserializeAsync<GetPaymentStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
+            await SendAndDeserializeAsync<GetPaymentStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct)
+                .ConfigureAwait(false);
 
         return response ?? throw new EmptyResponseException();
     }
@@ -63,7 +64,8 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             .AddPaymentMethodsPath(currency);
 
         var response =
-            await SendAndDeserializeAsync<GetPaymentMethodsResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
+            await SendAndDeserializeAsync<GetPaymentMethodsResponse>(HttpMethod.Get, builder.ToString(), ct: ct)
+                .ConfigureAwait(false);
 
         return response ?? throw new EmptyResponseException();
     }
@@ -81,7 +83,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             HttpMethod.Post,
             builder.ToString(),
             refundRequest,
-            ct);
+            ct).ConfigureAwait(false);
 
         return response ?? throw new EmptyResponseException();
     }
@@ -95,7 +97,8 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             .AddRefundStatusPath();
 
         var response =
-            await SendAndDeserializeAsync<GetRefundStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct);
+            await SendAndDeserializeAsync<GetRefundStatusResponse>(HttpMethod.Get, builder.ToString(), ct: ct)
+                .ConfigureAwait(false);
 
         return response ?? throw new EmptyResponseException();
     }
@@ -118,13 +121,9 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
 
         request.Headers.Add(PayNowConstants.HeadersNames.IdempotencyKey, Guid.NewGuid().ToString());
 
-        using var response = await httpClient.SendAsync(request, ct);
-        {
-            await using var contentStream = await response.Content.ReadAsStreamAsync(ct);
-            {
-                return await JsonSerializer.DeserializeAsync<T>(contentStream, cancellationToken: ct);
-            }
-        }
+        using var response = await httpClient.SendAsync(request, ct).ConfigureAwait(false);
+        await using var contentStream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
+        return await JsonSerializer.DeserializeAsync<T>(contentStream, cancellationToken: ct).ConfigureAwait(false);
     }
 
     public void Dispose() => hmacSha256Calculator.Dispose();
