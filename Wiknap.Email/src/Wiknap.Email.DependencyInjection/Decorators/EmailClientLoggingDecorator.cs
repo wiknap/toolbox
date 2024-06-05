@@ -17,7 +17,7 @@ internal sealed class EmailClientLoggingDecorator : IEmailClient
         CancellationToken ct = default)
     {
         logger.SendingEmail(mailTo);
-        await emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct);
+        await emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct).ConfigureAwait(false);
         logger.EmailSent(mailTo);
     }
 
@@ -26,7 +26,7 @@ internal sealed class EmailClientLoggingDecorator : IEmailClient
     {
         var emailsList = string.Join(',', recipients.Select(r => r.Email));
         logger.SendingEmail(emailsList);
-        await emailClient.SendEmailAsync(recipients, subject, message, isHtml, ct);
+        await emailClient.SendEmailAsync(recipients, subject, message, isHtml, ct).ConfigureAwait(false);
         logger.EmailSent(emailsList);
     }
 
@@ -34,7 +34,7 @@ internal sealed class EmailClientLoggingDecorator : IEmailClient
         CancellationToken ct = default)
     {
         logger.SearchingEmail();
-        var content = await emailClient.GetEmailContentAsync(parameters, contentType, ct);
+        var content = await emailClient.GetEmailContentAsync(parameters, contentType, ct).ConfigureAwait(false);
 
         if (!string.IsNullOrEmpty(content))
             logger.EmailFound();

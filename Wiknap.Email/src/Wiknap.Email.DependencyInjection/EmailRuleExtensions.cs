@@ -8,7 +8,7 @@ public static class EmailRuleExtensions
         {
             EmailRuleType.Domain => ContainsDomain(mailToCheck, rule.Value),
             EmailRuleType.Email => mailToCheck.Equals(rule.Value, StringComparison.OrdinalIgnoreCase),
-            _ => throw new ArgumentOutOfRangeException(nameof(rule.Type))
+            _ => throw new ArgumentOutOfRangeException(nameof(rule), $"Invalid rule type {rule.Type}")
         };
     }
 
