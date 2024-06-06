@@ -5,6 +5,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution items", ".solutio
 		..\Directory.Build.props = ..\Directory.Build.props
 		..\.gitignore = ..\.gitignore
 		..\.editorconfig = ..\.editorconfig
+		Directory.Packages.props = Directory.Packages.props
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{85861A53-DFBD-4370-A750-A254AE761D89}"
