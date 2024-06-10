@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <DebugType>Embedded</DebugType>
         <Description>Basic abstraction for CQRS</Description>
         <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
