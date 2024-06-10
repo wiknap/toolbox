@@ -6,6 +6,7 @@
         <PackageVersion Include="Meziantou.Xunit.ParallelTestFramework" Version="2.1.0" />
         <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+        <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
         <PackageVersion Include="NSubstitute" Version="5.1.0" />
         <PackageVersion Include="Scrutor" Version="4.2.2" />
         <PackageVersion Include="Shouldly" Version="4.2.1" />
