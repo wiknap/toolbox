@@ -2,6 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <Description>Extensions for dependency injection, configuration and additional decorators</Description>
+        <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
