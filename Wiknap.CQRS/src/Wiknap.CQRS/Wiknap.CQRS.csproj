@@ -2,6 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <Description>Basic abstraction for CQRS</Description>
+        <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
 </Project>
