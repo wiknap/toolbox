@@ -2,6 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <Description>Extensions for registering CQRS implementations together with basic dispatchers</Description>
+        <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
