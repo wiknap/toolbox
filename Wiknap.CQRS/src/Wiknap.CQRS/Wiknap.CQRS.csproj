@@ -7,9 +7,5 @@
         <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" />
-    </ItemGroup>
     
 </Project>
