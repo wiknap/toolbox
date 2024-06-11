@@ -15,7 +15,7 @@
         <PackageVersion Include="Scrutor" Version="4.2.2" />
         <PackageVersion Include="Shouldly" Version="4.2.1" />
         <PackageVersion Include="TeamCity.VSTest.TestAdapter" Version="1.0.38" />
-        <PackageVersion Include="Wiknap.Email" Version="2.0.8" />
+        <PackageVersion Include="Wiknap.Email" Version="2.0.9" />
         <PackageVersion Include="xunit" Version="2.6.2" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.4" />
     </ItemGroup>
