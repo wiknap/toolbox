@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <DebugType>Embedded</DebugType>
+        <Description>Extensions for registering PayNow API client implementations together configuration and options</Description>
+        <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>

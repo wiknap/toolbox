@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <DebugType>Embedded</DebugType>
+        <Description>.NET client for PayNow API</Description>
+        <RepositoryUrl>https://github.com/wiknap/toolbox</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
