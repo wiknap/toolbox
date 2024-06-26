@@ -19,5 +19,5 @@ internal sealed class TestEmailClientConfiguration : IEmailClientConfiguration
     public int ImapPort { get; }
     public string Login { get; }
     public string Password { get; }
-    public string SenderName { get; } = "Admin";
+    public string SenderName => "Admin";
 }

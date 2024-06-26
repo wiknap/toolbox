@@ -7,13 +7,13 @@ using Xunit;
 namespace Wiknap.Email.Tests.Integration.Fixture;
 
 [Collection("EmailServer")]
-public abstract class IntegrationTestsBase
+public abstract class IntegrationTestsBase : IDisposable
 {
     protected readonly IEmailClient EmailClient;
     private readonly IEmailClient userEmailClient;
     protected const string UserEmail = EmailServer.UserEmail;
     protected readonly Faker Faker = new();
-    protected CancellationTokenSource Cts = new();
+    protected readonly CancellationTokenSource Cts = new();
 
     protected IntegrationTestsBase(EmailServer emailServer)
     {
@@ -25,16 +25,19 @@ public abstract class IntegrationTestsBase
         userEmailClient = new Email.EmailClient(userConfig);
     }
 
-    protected async Task<string?> GetUserEmailContentAsync(SearchParameters searchParameters)
+    protected async Task<string?> GetUserEmailContentAsync(SearchParameters searchParameters,
+        EmailContentType? emailContentType = null)
     {
         var stopwatch = Stopwatch.StartNew();
 
         while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
         {
-            var content = await userEmailClient.GetEmailContentAsync(new SearchParameters
-            {
-                SenderEmail = searchParameters.SenderEmail, Subject = searchParameters.Subject
-            }).ConfigureAwait(false);
+            var content = await userEmailClient
+                .GetEmailContentAsync(
+                    new SearchParameters
+                    {
+                        SenderEmail = searchParameters.SenderEmail, Subject = searchParameters.Subject
+                    }, emailContentType, Cts.Token).ConfigureAwait(false);
 
             if (!string.IsNullOrEmpty(content))
                 return content;
@@ -42,4 +45,6 @@ public abstract class IntegrationTestsBase
 
         return null;
     }
+
+    public void Dispose() => Cts.Dispose();
 }
