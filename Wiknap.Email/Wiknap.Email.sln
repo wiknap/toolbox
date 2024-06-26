@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.Email.DependencyInje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.Email.DependencyInjection.Tests.Unit", "tests\Wiknap.Email.DependencyInjection.Tests.Unit\Wiknap.Email.DependencyInjection.Tests.Unit.csproj", "{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.Email.Tests.Integration", "tests\Wiknap.Email.Tests.Integration\Wiknap.Email.Tests.Integration.csproj", "{30952106-AE08-49BA-A64F-7E4C3F38FF6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +39,15 @@ Global
 		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30952106-AE08-49BA-A64F-7E4C3F38FF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30952106-AE08-49BA-A64F-7E4C3F38FF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30952106-AE08-49BA-A64F-7E4C3F38FF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30952106-AE08-49BA-A64F-7E4C3F38FF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0D764346-980F-479F-8188-F1E077519F58} = {6E4DAD3C-0090-4B1E-9244-B0E6F44AFAC8}
 		{1C691BD9-3C29-4030-976B-D3DFE28FA7B5} = {6E4DAD3C-0090-4B1E-9244-B0E6F44AFAC8}
 		{BC5EFBDF-0617-4C7D-B59D-13D147079CB9} = {B9233DCD-162C-4704-8229-4FC97B56A2BD}
+		{30952106-AE08-49BA-A64F-7E4C3F38FF6E} = {B9233DCD-162C-4704-8229-4FC97B56A2BD}
 	EndGlobalSection
 EndGlobal
