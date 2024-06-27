@@ -71,8 +71,8 @@ public static class MimeMessageExtensions
     {
         return contentType.MimeType switch
         {
-            "image/png" => EmailAttachmentType.Png,
-            "image/gif" => EmailAttachmentType.Gif,
+            MimeTypes.Images.Png => EmailAttachmentType.Png,
+            MimeTypes.Images.Gif => EmailAttachmentType.Gif,
             _ => throw new ArgumentOutOfRangeException(nameof(contentType), contentType, null)
         };
     }

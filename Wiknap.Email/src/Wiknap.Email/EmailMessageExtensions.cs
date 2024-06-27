@@ -46,10 +46,11 @@ public static class EmailMessageExtensions
 
     private static ContentType ToContentType(this EmailAttachmentType attachmentType)
     {
+        var temp = ContentTypes.Gif;
         return attachmentType switch
         {
-            EmailAttachmentType.Gif => new ContentType("image", "gif"),
-            EmailAttachmentType.Png => new ContentType("image", "png"),
+            EmailAttachmentType.Gif => ContentTypes.Gif,
+            EmailAttachmentType.Png => ContentTypes.Png,
             _ => throw new ArgumentOutOfRangeException(nameof(attachmentType), attachmentType, null)
         };
     }
