@@ -7,11 +7,3 @@ public record EmailMessage
     public EmailBody? Body { get; set; }
     public HashSet<EmailAttachment> Attachments { get; } = [];
 }
-
-public record EmailAttachment(string Filename, EmailAttachmentType Type, Stream Content);
-
-public enum EmailAttachmentType
-{
-    Gif,
-    Png
-}
