@@ -2,6 +2,8 @@ using System.Diagnostics;
 
 using Bogus;
 
+using Wiknap.Email.Models;
+
 using Xunit;
 
 namespace Wiknap.Email.Tests.Integration.Fixture;
@@ -25,8 +27,7 @@ public abstract class IntegrationTestsBase : IDisposable
         userEmailClient = new Email.EmailClient(userConfig);
     }
 
-    protected async Task<string?> GetUserEmailContentAsync(SearchParameters searchParameters,
-        EmailContentType? emailContentType = null)
+    protected async Task<EmailContent?> GetUserEmailContentAsync(SearchParameters searchParameters)
     {
         var stopwatch = Stopwatch.StartNew();
 
@@ -37,9 +38,9 @@ public abstract class IntegrationTestsBase : IDisposable
                     new SearchParameters
                     {
                         SenderEmail = searchParameters.SenderEmail, Subject = searchParameters.Subject
-                    }, emailContentType, Cts.Token).ConfigureAwait(false);
+                    }, Cts.Token).ConfigureAwait(false);
 
-            if (!string.IsNullOrEmpty(content))
+            if (content is not null)
                 return content;
         }
 

@@ -7,6 +7,8 @@ using MailKit.Search;
 
 using MimeKit;
 
+using Wiknap.Email.Models;
+
 namespace Wiknap.Email;
 
 [PublicAPI]
@@ -21,26 +23,15 @@ public class EmailClient : IEmailClient
         senderMailboxAddress = new MailboxAddress(this.configuration.SenderName, this.configuration.Login);
     }
 
-    public Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
-        CancellationToken ct = default)
-        => SendEmailAsync([new Recipient(mailTo)], subject, message, isHtml, ct);
-
-    public async Task SendEmailAsync(Recipient[] recipients, string subject, string message, bool isHtml = false,
-        CancellationToken ct = default)
+    public async Task SendEmailAsync(EmailMessage message, CancellationToken ct = default)
     {
-        var mimeMessage = new MimeMessage();
-        mimeMessage.From.Add(senderMailboxAddress);
-        mimeMessage.AddRecipients(recipients);
-        mimeMessage.Subject = subject;
-        mimeMessage.Body = new TextPart(isHtml ? "html" : "plain") { Text = message };
-
+        using var mimeMessage = message.ToMimeMessage(senderMailboxAddress);
         using var client = await GetSmtpClientAsync(ct).ConfigureAwait(false);
         await client.SendAsync(mimeMessage, ct).ConfigureAwait(false);
         await client.DisconnectAsync(true, ct).ConfigureAwait(false);
     }
 
-    public async Task<string?> GetEmailContentAsync(SearchParameters parameters,
-        EmailContentType? contentType = null, CancellationToken ct = default)
+    public async Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = default)
     {
         using var client = await GetImapClientAsync(ct).ConfigureAwait(false);
         await client.Inbox.OpenAsync(FolderAccess.ReadOnly, ct).ConfigureAwait(false);
@@ -53,7 +44,7 @@ public class EmailClient : IEmailClient
         if (parameters.DeliveredAfter.HasValue && message.Date <= new DateTimeOffset(parameters.DeliveredAfter.Value))
             return null;
 
-        return message?.GetMessageContent(contentType);
+        return message?.GetEmailContent();
     }
 
     private static SearchQuery GetSearchQuery(SearchParameters parameters)
