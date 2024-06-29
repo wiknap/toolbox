@@ -11,7 +11,10 @@ public static class EmailMessageExtensions
         var mimeMessage = new MimeMessage();
         mimeMessage.From.Add(fromAddress);
         mimeMessage.AddRecipients(emailMessage.Recipients);
-        mimeMessage.Subject = emailMessage.Subject;
+
+        if (!string.IsNullOrEmpty(emailMessage.Subject))
+            mimeMessage.Subject = emailMessage.Subject;
+
         mimeMessage.Body = GetMimeMessageBody(emailMessage);
 
         return mimeMessage;
@@ -41,12 +44,11 @@ public static class EmailMessageExtensions
             multipart.Add(attachmentPart);
         }
 
-        return multipart;
+        return multipart.Count > 0 ? multipart : null;
     }
 
-    private static ContentType ToContentType(this EmailAttachmentType attachmentType)
+    public static ContentType ToContentType(this EmailAttachmentType attachmentType)
     {
-        var temp = ContentTypes.Gif;
         return attachmentType switch
         {
             EmailAttachmentType.Gif => ContentTypes.Gif,
@@ -55,6 +57,6 @@ public static class EmailMessageExtensions
         };
     }
 
-    private static TextPart ToTextPart(this EmailBody emailBody)
+    public static TextPart ToTextPart(this EmailBody emailBody)
         => new(emailBody.ContentType == EmailContentType.Html ? "html" : "plain") { Text = emailBody.Message };
 }
