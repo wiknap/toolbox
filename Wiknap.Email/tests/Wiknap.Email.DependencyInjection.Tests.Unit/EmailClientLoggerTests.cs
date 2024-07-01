@@ -1,9 +1,15 @@
 ﻿using Bogus;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
+
 using NSubstitute;
+
 using Shouldly;
+
 using Wiknap.Email.DependencyInjection.Decorators;
+using Wiknap.Email.Models;
+
 using Xunit;
 
 namespace Wiknap.Email.DependencyInjection.Tests.Unit;
@@ -19,14 +25,14 @@ public sealed class EmailClientLoggerTests
         var logger = new EmailClientLoggingDecorator(ec, l);
         var faker = new Faker();
         var email = faker.Internet.Email();
-        var subject = faker.Lorem.Word();
-        var content = faker.Lorem.Sentence();
+        var message = new EmailMessage { Subject = faker.Lorem.Word(), Body = faker.Lorem.Sentence() };
+        message.Recipients.Add(email);
 
         // Act
-        await logger.SendEmailAsync(email, subject, content);
+        await logger.SendEmailAsync(message);
 
         //Assert
-        await ec.Received(1).SendEmailAsync(email, subject, content);
+        await ec.Received(1).SendEmailAsync(message);
         var records = l.Collector.GetSnapshot();
         records.ShouldNotBeEmpty();
         records.Count.ShouldBe(2);
@@ -41,7 +47,7 @@ public sealed class EmailClientLoggerTests
         // Arrange
         var faker = new Faker();
         var ec = Substitute.For<IEmailClient>();
-        var content = faker.Lorem.Sentence();
+        var content = new EmailContent(null);
         ec.GetEmailContentAsync(Arg.Any<SearchParameters>()).Returns(content);
         var l = new FakeLogger<EmailClientLoggingDecorator>();
         var logger = new EmailClientLoggingDecorator(ec, l);
@@ -68,7 +74,7 @@ public sealed class EmailClientLoggerTests
         // Arrange
         var faker = new Faker();
         var ec = Substitute.For<IEmailClient>();
-        ec.GetEmailContentAsync(Arg.Any<SearchParameters>()).Returns(default(string?));
+        ec.GetEmailContentAsync(Arg.Any<SearchParameters>()).Returns(default(EmailContent?));
         var l = new FakeLogger<EmailClientLoggingDecorator>();
         var logger = new EmailClientLoggingDecorator(ec, l);
         var email = faker.Internet.Email();

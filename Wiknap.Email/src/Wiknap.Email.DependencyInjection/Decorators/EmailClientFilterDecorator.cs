@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 
+using Wiknap.Email.Models;
+
 namespace Wiknap.Email.DependencyInjection.Decorators;
 
 internal sealed class EmailClientFilterDecorator : IEmailClient
@@ -16,6 +18,25 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
         this.logger = logger;
     }
 
+    public Task SendEmailAsync(EmailMessage message, CancellationToken ct = new())
+    {
+        foreach (var recipient in message.Recipients)
+        {
+            if (ShouldSend(recipient))
+                continue;
+
+            message.Recipients.Remove(recipient);
+            logger.EmailExcluded(recipient.EmailAddress.Email);
+        }
+
+        return message.Recipients.Count > 0
+            ? emailClient.SendEmailAsync(message, ct)
+            : Task.CompletedTask;
+    }
+
+    public Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = new())
+        => emailClient.GetEmailContentAsync(parameters, ct);
+
     public Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
@@ -26,41 +47,12 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
         return Task.CompletedTask;
     }
 
-    public Task SendEmailAsync(Recipient[] recipients, string subject, string message, bool isHtml = false,
-        CancellationToken ct = default)
+    private bool ShouldSend(Recipient recipient)
     {
-        {
-            var recipientsList = new List<Recipient>();
-
-            foreach (var recipient in recipients)
-            {
-                if (ShouldSend(recipient.Email))
-                {
-                    recipientsList.Add(recipient);
-                    continue;
-                }
-
-                logger.EmailExcluded(recipient.Email);
-            }
-
-            return recipientsList.Count > 0
-                ? emailClient.SendEmailAsync(recipientsList.ToArray(), subject, message, isHtml, ct)
-                : Task.CompletedTask;
-        }
-    }
-
-    public Task<string?> GetEmailContentAsync(SearchParameters parameters, EmailContentType? contentType = null,
-        CancellationToken ct = default)
-    {
-        return emailClient.GetEmailContentAsync(parameters, contentType, ct);
-    }
-
-    private bool ShouldSend(string mailTo)
-    {
-        if (IsIncluded(mailTo))
+        if (IsIncluded(recipient.EmailAddress.Email))
             return true;
 
-        return !IsExcluded(mailTo);
+        return !IsExcluded(recipient.EmailAddress.Email);
     }
 
     private bool IsExcluded(string mailTo)

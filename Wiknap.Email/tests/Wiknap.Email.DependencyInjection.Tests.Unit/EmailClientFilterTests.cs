@@ -1,8 +1,14 @@
 ﻿using Bogus;
+
 using Microsoft.Extensions.Logging.Testing;
+
 using NSubstitute;
+
 using Shouldly;
+
 using Wiknap.Email.DependencyInjection.Decorators;
+using Wiknap.Email.Models;
+
 using Xunit;
 
 namespace Wiknap.Email.DependencyInjection.Tests.Unit;
@@ -18,15 +24,14 @@ public sealed class EmailClientFilterTests
         var l = new FakeLogger<EmailClientFilterDecorator>();
         var filter = new EmailClientFilterDecorator(ec, c, l);
         var faker = new Faker();
-        var email = faker.Internet.Email();
-        var subject = faker.Lorem.Word();
-        var content = faker.Lorem.Sentence();
+        var message = new EmailMessage { Subject = faker.Lorem.Word(), Body = faker.Lorem.Sentence() };
+        message.Recipients.Add(faker.Internet.Email());
 
         // Act
-        await filter.SendEmailAsync(email, subject, content);
+        await filter.SendEmailAsync(message);
 
         //Assert
-        await ec.Received(1).SendEmailAsync(email, subject, content);
+        await ec.Received(1).SendEmailAsync(message);
     }
 
     [Fact]
@@ -62,14 +67,14 @@ public sealed class EmailClientFilterTests
         c.Include.Returns(new[] { new EmailRule(EmailRuleType.Email, email) });
         var l = new FakeLogger<EmailClientFilterDecorator>();
         var filter = new EmailClientFilterDecorator(ec, c, l);
-        var subject = faker.Lorem.Word();
-        var content = faker.Lorem.Sentence();
+        var message = new EmailMessage { Subject = faker.Lorem.Word(), Body = faker.Lorem.Sentence() };
+        message.Recipients.Add(email);
 
         // Act
-        await filter.SendEmailAsync(email, subject, content);
+        await filter.SendEmailAsync(message);
 
         //Assert
-        await ec.Received(1).SendEmailAsync(email, subject, content);
+        await ec.Received(1).SendEmailAsync(message);
     }
 
     [Fact]
@@ -85,14 +90,14 @@ public sealed class EmailClientFilterTests
         c.Include.Returns(new[] { new EmailRule(EmailRuleType.Domain, domain) });
         var l = new FakeLogger<EmailClientFilterDecorator>();
         var filter = new EmailClientFilterDecorator(ec, c, l);
-        var subject = faker.Lorem.Word();
-        var content = faker.Lorem.Sentence();
+        var message = new EmailMessage { Subject = faker.Lorem.Word(), Body = faker.Lorem.Sentence() };
+        message.Recipients.Add(email);
 
         // Act
-        await filter.SendEmailAsync(email, subject, content);
+        await filter.SendEmailAsync(message);
 
         //Assert
-        await ec.Received(1).SendEmailAsync(email, subject, content);
+        await ec.Received(1).SendEmailAsync(message);
     }
 
     [Fact]
@@ -141,7 +146,8 @@ public sealed class EmailClientFilterTests
     }
 
     [Fact]
-    public async Task Given_ConfigurationWithExcludeAllFalseAndExcludeDomainRuleAndIncludeEmailRule_When_SendEmailAsync_ShouldSend()
+    public async Task
+        Given_ConfigurationWithExcludeAllFalseAndExcludeDomainRuleAndIncludeEmailRule_When_SendEmailAsync_ShouldSend()
     {
         // Arrange
         var ec = Substitute.For<IEmailClient>();
@@ -153,14 +159,14 @@ public sealed class EmailClientFilterTests
         c.Exclude.Returns(new[] { new EmailRule(EmailRuleType.Domain, domain) });
         var l = new FakeLogger<EmailClientFilterDecorator>();
         var filter = new EmailClientFilterDecorator(ec, c, l);
-        var subject = faker.Lorem.Word();
-        var content = faker.Lorem.Sentence();
+        var message = new EmailMessage { Subject = faker.Lorem.Word(), Body = faker.Lorem.Sentence() };
+        message.Recipients.Add(email);
 
         // Act
-        await filter.SendEmailAsync(email, subject, content);
+        await filter.SendEmailAsync(message);
 
         //Assert
-        await ec.Received(1).SendEmailAsync(email, subject, content);
+        await ec.Received(1).SendEmailAsync(message);
     }
 
     [Fact]
@@ -169,7 +175,7 @@ public sealed class EmailClientFilterTests
         // Arrange
         var faker = new Faker();
         var ec = Substitute.For<IEmailClient>();
-        var content = faker.Lorem.Sentence();
+        var content = new EmailContent(null);
         ec.GetEmailContentAsync(Arg.Any<SearchParameters>()).Returns(content);
         var c = Substitute.For<IEmailFilterConfiguration>();
         var l = new FakeLogger<EmailClientFilterDecorator>();
