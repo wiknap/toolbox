@@ -45,12 +45,11 @@ public static class MimeMessageExtensions
             attachments.Add(emailAttachment);
         }
 
-        return new EmailContent(body, attachments.ToArray());
+        return new EmailContent(body, [.. attachments]);
     }
 
     public static EmailAttachment? ToEmailAttachment(this MimeEntity attachment)
     {
-        var fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
         var memoryStream = new MemoryStream();
         switch (attachment)
         {
@@ -64,6 +63,7 @@ public static class MimeMessageExtensions
                 return null;
         }
 
+        var fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
         return new EmailAttachment(fileName, attachment.ContentType.GetAttachmentType(), memoryStream);
     }
 
@@ -73,6 +73,7 @@ public static class MimeMessageExtensions
         {
             MimeTypes.Images.Png => EmailAttachmentType.Png,
             MimeTypes.Images.Gif => EmailAttachmentType.Gif,
+            MimeTypes.Message.Rfc822 => EmailAttachmentType.Rfc822,
             _ => throw new ArgumentOutOfRangeException(nameof(contentType), contentType, null)
         };
     }

@@ -11,7 +11,7 @@ public record EmailContent(EmailBody? Body, IReadOnlyList<EmailAttachment> Attac
     {
         foreach (var attachment in Attachments)
         {
-            await attachment.Content.DisposeAsync();
+            await attachment.DisposeAsync();
             GC.SuppressFinalize(this);
         }
     }
