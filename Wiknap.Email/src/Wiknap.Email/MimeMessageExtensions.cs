@@ -63,6 +63,7 @@ public static class MimeMessageExtensions
                 return null;
         }
 
+        memoryStream.Seek(0, SeekOrigin.Begin);
         var fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
         return new EmailAttachment(fileName, attachment.ContentType.GetAttachmentType(), memoryStream);
     }

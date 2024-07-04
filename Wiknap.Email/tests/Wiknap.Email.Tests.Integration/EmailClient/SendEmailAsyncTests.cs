@@ -83,7 +83,7 @@ public sealed class SendEmailAsyncTests : IntegrationTestsBase
         attachment.Type.ShouldBe(EmailAttachmentType.Png);
         await using var attachmentMemoryStream = new MemoryStream();
         await attachment.Content.CopyToAsync(attachmentMemoryStream);
-        var attachmentBytes = imageMemoryStream.ToArray();
+        var attachmentBytes = attachmentMemoryStream.ToArray();
         attachmentBytes.ShouldBe(imageBytes);
     }
 
@@ -118,7 +118,7 @@ public sealed class SendEmailAsyncTests : IntegrationTestsBase
         attachment.Type.ShouldBe(EmailAttachmentType.Png);
         await using var attachmentMemoryStream = new MemoryStream();
         await attachment.Content.CopyToAsync(attachmentMemoryStream);
-        var attachmentBytes = imageMemoryStream.ToArray();
+        var attachmentBytes = attachmentMemoryStream.ToArray();
         attachmentBytes.ShouldBe(imageBytes);
     }
 }
