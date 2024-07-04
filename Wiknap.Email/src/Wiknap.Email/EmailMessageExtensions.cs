@@ -51,8 +51,20 @@ public static class EmailMessageExtensions
     {
         return attachmentType switch
         {
-            EmailAttachmentType.Gif => ContentTypes.Gif,
-            EmailAttachmentType.Png => ContentTypes.Png,
+            EmailAttachmentType.Gif => ContentType.Parse(MimeTypes.Images.Gif),
+            EmailAttachmentType.Png => ContentType.Parse(MimeTypes.Images.Png),
+            EmailAttachmentType.Jpeg => ContentType.Parse(MimeTypes.Images.Jpeg),
+            EmailAttachmentType.Svg => ContentType.Parse(MimeTypes.Images.Svg),
+            EmailAttachmentType.Bmp => ContentType.Parse(MimeTypes.Images.Bmp),
+            EmailAttachmentType.Csv => ContentType.Parse(MimeTypes.Application.Csv),
+            EmailAttachmentType.Doc => ContentType.Parse(MimeTypes.Application.Doc),
+            EmailAttachmentType.Docx => ContentType.Parse(MimeTypes.Application.Docx),
+            EmailAttachmentType.Pdf => ContentType.Parse(MimeTypes.Application.Pdf),
+            EmailAttachmentType.Xls => ContentType.Parse(MimeTypes.Application.Xls),
+            EmailAttachmentType.Xlsx => ContentType.Parse(MimeTypes.Application.Xlsx),
+            EmailAttachmentType.Zip => ContentType.Parse(MimeTypes.Application.Zip),
+            EmailAttachmentType.ZipWindows => ContentType.Parse(MimeTypes.Application.ZipWindows),
+            EmailAttachmentType.Rfc822 => ContentType.Parse(MimeTypes.Images.Gif),
             _ => throw new ArgumentOutOfRangeException(nameof(attachmentType), attachmentType, null)
         };
     }

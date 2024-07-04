@@ -71,8 +71,19 @@ public static class MimeMessageExtensions
     {
         return contentType.MimeType switch
         {
+            MimeTypes.Application.Docx => EmailAttachmentType.Docx,
+            MimeTypes.Application.Pdf => EmailAttachmentType.Pdf,
+            MimeTypes.Application.Xls => EmailAttachmentType.Xls,
+            MimeTypes.Application.Xlsx => EmailAttachmentType.Xlsx,
+            MimeTypes.Application.Zip => EmailAttachmentType.Zip,
+            MimeTypes.Application.ZipWindows => EmailAttachmentType.ZipWindows,
+            MimeTypes.Application.Csv => EmailAttachmentType.Csv,
+            MimeTypes.Application.Doc => EmailAttachmentType.Doc,
             MimeTypes.Images.Png => EmailAttachmentType.Png,
             MimeTypes.Images.Gif => EmailAttachmentType.Gif,
+            MimeTypes.Images.Jpeg => EmailAttachmentType.Jpeg,
+            MimeTypes.Images.Svg => EmailAttachmentType.Svg,
+            MimeTypes.Images.Bmp => EmailAttachmentType.Bmp,
             MimeTypes.Message.Rfc822 => EmailAttachmentType.Rfc822,
             _ => throw new ArgumentOutOfRangeException(nameof(contentType), contentType, null)
         };

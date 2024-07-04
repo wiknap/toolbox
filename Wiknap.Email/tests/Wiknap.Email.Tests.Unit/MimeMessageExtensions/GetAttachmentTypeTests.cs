@@ -30,6 +30,17 @@ public sealed class GetAttachmentTypeTests : TestsBase
         {
             yield return [ContentType.Parse("image/gif"), EmailAttachmentType.Gif];
             yield return [ContentType.Parse("image/png"), EmailAttachmentType.Png];
+            yield return [ContentType.Parse("image/jpeg"), EmailAttachmentType.Jpeg];
+            yield return [ContentType.Parse("image/svg+xml"), EmailAttachmentType.Svg];
+            yield return [ContentType.Parse("image/bmp"), EmailAttachmentType.Bmp];
+            yield return [ContentType.Parse("text/csv"), EmailAttachmentType.Csv];
+            yield return [ContentType.Parse("application/msword"), EmailAttachmentType.Doc];
+            yield return [ContentType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document"), EmailAttachmentType.Docx];
+            yield return [ContentType.Parse("application/pdf"), EmailAttachmentType.Pdf];
+            yield return [ContentType.Parse("application/vnd.ms-excel"), EmailAttachmentType.Xls];
+            yield return [ContentType.Parse("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), EmailAttachmentType.Xlsx];
+            yield return [ContentType.Parse("application/zip"), EmailAttachmentType.Zip];
+            yield return [ContentType.Parse("application/x-zip-compressed"), EmailAttachmentType.ZipWindows];
             yield return [ContentType.Parse("message/rfc822"), EmailAttachmentType.Rfc822];
         }
 
