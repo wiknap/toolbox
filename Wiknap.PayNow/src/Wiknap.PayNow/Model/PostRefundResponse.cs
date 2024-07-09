@@ -7,10 +7,14 @@ using Wiknap.PayNow.Converters;
 namespace Wiknap.PayNow.Model;
 
 [PublicAPI]
-public sealed record PostRefundResponse(
-    [property: JsonPropertyName("refundId")]
-    string RefundId,
-    [property: JsonPropertyName("status")] PostRefundStatus? Status);
+public sealed record PostRefundResponse
+{
+    [JsonPropertyName("refundId")]
+    public required string RefundId { get; init; }
+
+    [JsonPropertyName("status")]
+    public required PostRefundStatus Status { get; init; }
+}
 
 [PublicAPI]
 [JsonConverter(typeof(PostRefundStatusJsonConverter))]
