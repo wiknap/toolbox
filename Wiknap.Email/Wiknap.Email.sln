@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution Items", ".solutio
 		..\.gitignore = ..\.gitignore
 		..\Directory.Build.props = ..\Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
-		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiknap.Email.DependencyInjection", "src\Wiknap.Email.DependencyInjection\Wiknap.Email.DependencyInjection.csproj", "{1C691BD9-3C29-4030-976B-D3DFE28FA7B5}"
