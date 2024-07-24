@@ -13,7 +13,7 @@ namespace Wiknap.PayNow.Tests.Unit.Model;
 public sealed class PostPaymentRequestTests : TestsBase
 {
     [Fact]
-    public void Given_ValidRequest_WhenSerialize_ShouldReturnCorrectJson()
+    public void Given_ValidRequest_When_Serialize_Then_ReturnsCorrectJson()
     {
         // Arrange
         var request = new PostPaymentRequest(Faker.Random.Decimal(min: 1, max: 1000M), Faker.Lorem.Word(),
@@ -39,7 +39,7 @@ public sealed class PostPaymentRequestTests : TestsBase
     }
 
     [Fact]
-    public void Given_ValidJson_WhenDeserialize_ShouldReturnObject()
+    public void Given_ValidJson_When_Deserialize_Then_ReturnObject()
     {
         //Arrange
         var amount = Faker.Random.Int(min: 1, max: 100000);
@@ -68,8 +68,14 @@ public sealed class PostPaymentRequestTests : TestsBase
         deserialized.ShouldNotBeNull();
         deserialized.AmountAsInt.ShouldBe(amount);
         deserialized.Amount.ShouldBe(decimal.Divide(amount, 100));
+        deserialized.Currency.ShouldBeNull();
         deserialized.ExternalId.ShouldBe(id);
         deserialized.Description.ShouldBe(desc);
+        deserialized.ContinueUrl.ShouldBeNull();
         deserialized.Buyer.Email.ShouldBe(email);
+        deserialized.Buyer.FirstName.ShouldBeNull();
+        deserialized.Buyer.LastName.ShouldBeNull();
+        deserialized.Buyer.Phone.ShouldBeNull();
+        deserialized.Buyer.Locale.ShouldBeNull();
     }
 }

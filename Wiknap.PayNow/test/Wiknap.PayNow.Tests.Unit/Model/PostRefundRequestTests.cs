@@ -13,7 +13,7 @@ namespace Wiknap.PayNow.Tests.Unit.Model;
 public sealed class PostRefundRequestTests : TestsBase
 {
     [Fact]
-    public void Given_ValidRequest_WhenSerialize_ShouldReturnCorrectJson()
+    public void Given_ValidRequest_When_Serialize_Then_ReturnsCorrectJson()
     {
         // Arrange
         var request = new PostRefundRequest(Faker.Random.Decimal(min: 1, max: 1000M), RefundReason.RefundAfter14);
@@ -29,7 +29,7 @@ public sealed class PostRefundRequestTests : TestsBase
     }
 
     [Fact]
-    public void Given_ValidJson_WhenDeserialize_ShouldReturnObject()
+    public void Given_ValidJson_When_Deserialize_Then_ReturnsObject()
     {
         // Arrange
         var amount = Faker.Random.Int(min: 1, max: 100000);
