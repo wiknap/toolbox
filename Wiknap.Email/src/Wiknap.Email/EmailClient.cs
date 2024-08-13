@@ -20,7 +20,10 @@ public class EmailClient : IEmailClient
     public EmailClient(IEmailClientConfiguration configuration)
     {
         this.configuration = configuration;
-        senderMailboxAddress = new MailboxAddress(this.configuration.SenderName, this.configuration.Login);
+        var address = !string.IsNullOrEmpty(this.configuration.SenderEmail)
+            ? this.configuration.SenderEmail
+            : this.configuration.Login;
+        senderMailboxAddress = new MailboxAddress(this.configuration.SenderName, address);
     }
 
     public async Task SendEmailAsync(EmailMessage message, CancellationToken ct = default)
