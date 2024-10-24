@@ -1,6 +1,8 @@
-﻿using System.Net.Mime;
+﻿using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Web;
 
 using JetBrains.Annotations;
 
@@ -14,16 +16,26 @@ namespace Wiknap.PayNow;
 public sealed class PayNowClient : IPayNowClient, IDisposable
 {
     private readonly Encoding encoding = Encoding.UTF8;
-    private readonly HmacSha256Calculator hmacSha256Calculator;
+    private readonly SignatureCalculator signatureCalculator;
     private readonly HttpClient httpClient;
+    private readonly IPayNowConfiguration configuration;
+
+    private readonly JsonSerializerOptions jsonSerializerOptions = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
     public PayNowClient(HttpClient httpClient, IPayNowConfiguration configuration)
     {
         this.httpClient = httpClient;
+        this.configuration = configuration;
 
         this.httpClient.BaseAddress = new Uri(configuration.ApiPath);
         this.httpClient.DefaultRequestHeaders.Add(PayNowConstants.HeadersNames.ApiKey, configuration.ApiKey);
-        hmacSha256Calculator = new HmacSha256Calculator(encoding.GetBytes(configuration.SignatureKey));
+        this.httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        signatureCalculator =
+            new SignatureCalculator(encoding.GetBytes(configuration.SignatureKey));
     }
 
     public async Task<PostPaymentResponse> PostPaymentRequestAsync(PostPaymentRequest paymentRequest,
@@ -55,7 +67,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
         return response ?? throw new EmptyResponseException();
     }
 
-    public async Task<GetPaymentMethodsResponse> GetPaymentMethodsAsync(Currency currency = Currency.PLN,
+    public async Task<IReadOnlyCollection<AvailablePaymentMethod>> GetPaymentMethodsAsync(Currency currency = Currency.PLN,
         CancellationToken ct = default)
     {
         var builder = GetBuilder();
@@ -64,7 +76,7 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
             .AddPaymentMethodsPath(currency);
 
         var response =
-            await SendAndDeserializeAsync<GetPaymentMethodsResponse>(HttpMethod.Get, builder.ToString(), ct: ct)
+            await SendAndDeserializeAsync<IReadOnlyCollection<AvailablePaymentMethod>>(HttpMethod.Get, builder.ToString(), ct: ct)
                 .ConfigureAwait(false);
 
         return response ?? throw new EmptyResponseException();
@@ -110,21 +122,28 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
     {
         using var request = new HttpRequestMessage(method, path);
 
-        if (content != null)
-        {
-            var serializedContent = JsonSerializer.Serialize(content);
-            request.Content = new StringContent(serializedContent, encoding, MediaTypeNames.Application.Json);
+        var idempotencyKey = Guid.NewGuid().ToString();
+        var queryParameters = HttpUtility.ParseQueryString(new Uri(new Uri(configuration.ApiPath), path).Query);
+        var queryDictionary = queryParameters.Cast<string>()
+            .ToDictionary(key => key, key => (string[]) [queryParameters[key]!]);
 
-            request.Headers.Add(PayNowConstants.HeadersNames.Signature,
-                hmacSha256Calculator.CalculateHmac(encoding.GetBytes(serializedContent)));
+        string? contentJson = null;
+
+        if (content is not null)
+        {
+            var json = JsonSerializer.Serialize(content, jsonSerializerOptions);
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            contentJson = json;
         }
 
-        request.Headers.Add(PayNowConstants.HeadersNames.IdempotencyKey, Guid.NewGuid().ToString());
+        request.Headers.Add(PayNowConstants.HeadersNames.Signature,
+            signatureCalculator.Calculate(configuration.ApiKey, idempotencyKey, queryDictionary, contentJson));
+
+        request.Headers.Add(PayNowConstants.HeadersNames.IdempotencyKey, idempotencyKey);
 
         using var response = await httpClient.SendAsync(request, ct).ConfigureAwait(false);
-        await using var contentStream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
-        return await JsonSerializer.DeserializeAsync<T>(contentStream, cancellationToken: ct).ConfigureAwait(false);
+        return await response.Content.ReadFromJsonAsync<T>(ct).ConfigureAwait(false);
     }
 
-    public void Dispose() => hmacSha256Calculator.Dispose();
+    public void Dispose() => signatureCalculator.Dispose();
 }

@@ -12,7 +12,7 @@ public interface IPayNowClient
 
     Task<GetPaymentStatusResponse> GetPaymentStatusAsync(string paymentId, CancellationToken ct = default);
 
-    Task<GetPaymentMethodsResponse> GetPaymentMethodsAsync(Currency currency = Currency.PLN,
+    Task<IReadOnlyCollection<AvailablePaymentMethod>> GetPaymentMethodsAsync(Currency currency = Currency.PLN,
         CancellationToken ct = default);
 
     Task<PostRefundResponse> PostRefundRequestAsync(string paymentId, PostRefundRequest refundRequest,

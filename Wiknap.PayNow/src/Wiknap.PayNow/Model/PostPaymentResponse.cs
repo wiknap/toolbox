@@ -24,5 +24,6 @@ public sealed record PostPaymentResponse
 public enum Status
 {
     New,
+    Pending,
     Error
 }

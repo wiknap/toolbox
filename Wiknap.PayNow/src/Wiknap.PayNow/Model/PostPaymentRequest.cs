@@ -10,7 +10,7 @@ public sealed record PostPaymentRequest
 {
     [JsonConstructor]
     private PostPaymentRequest(int amountAsInt, Currency? currency, string externalId, string description,
-        string? continueUrl, Buyer buyer)
+        string? continueUrl, Buyer buyer, int? paymentMethodId, string? authorizationCode)
     {
         AmountAsInt = amountAsInt;
         Currency = currency;
@@ -18,10 +18,12 @@ public sealed record PostPaymentRequest
         Description = description;
         ContinueUrl = continueUrl;
         Buyer = buyer;
+        PaymentMethodId = paymentMethodId;
+        AuthorizationCode = authorizationCode;
     }
 
     public PostPaymentRequest(decimal amount, string externalId, string description, Buyer buyer,
-        Currency? currency = null, string? continueUrl = null)
+        Currency? currency = null, string? continueUrl = null, int? paymentMethodId = null, string? authorizationCode = null)
     {
         Amount = amount;
         Currency = currency;
@@ -29,6 +31,8 @@ public sealed record PostPaymentRequest
         Description = description;
         ContinueUrl = continueUrl;
         Buyer = buyer;
+        PaymentMethodId = paymentMethodId;
+        AuthorizationCode = authorizationCode;
     }
 
     [JsonIgnore]
@@ -55,6 +59,12 @@ public sealed record PostPaymentRequest
 
     [JsonPropertyName("buyer")]
     public Buyer Buyer { get; set; }
+
+    [JsonPropertyName("paymentMethodId")]
+    public int? PaymentMethodId { get; set; }
+
+    [JsonPropertyName("authorizationCode")]
+    public string? AuthorizationCode { get; set; }
 }
 
 [PublicAPI]

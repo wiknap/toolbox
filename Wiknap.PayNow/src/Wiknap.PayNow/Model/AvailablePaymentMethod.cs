@@ -7,7 +7,7 @@ using Wiknap.PayNow.Converters;
 namespace Wiknap.PayNow.Model;
 
 [PublicAPI]
-public sealed record GetPaymentMethodsResponse
+public sealed record AvailablePaymentMethod
 {
     [JsonPropertyName("type")]
     public required PaymentMethodType Type { get; set; }

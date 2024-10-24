@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Wiknap.PayNow.Tests.Unit.Model;
 
-public sealed class GetPaymentMethodsResponseTests : TestsBase
+public sealed class AvailablePaymentMethodTests : TestsBase
 {
     [Fact]
     public void Given_ValidRequest_When_Serialize_Then_ReturnsCorrectJson()
@@ -22,7 +22,7 @@ public sealed class GetPaymentMethodsResponseTests : TestsBase
             Name = Faker.Lorem.Word(),
             Status = PaymentMethodStatus.Enabled
         };
-        var response = new GetPaymentMethodsResponse
+        var response = new AvailablePaymentMethod
         {
             Type = PaymentMethodType.Blik,
             PaymentMethods = [method]
@@ -68,7 +68,7 @@ public sealed class GetPaymentMethodsResponseTests : TestsBase
                     "}";
 
         // Act & Assert
-        var deserialized = JsonSerializer.Deserialize<GetPaymentMethodsResponse>(json);
+        var deserialized = JsonSerializer.Deserialize<AvailablePaymentMethod>(json);
 
         deserialized.ShouldNotBeNull();
         deserialized.Type.ShouldBe(PaymentMethodType.Blik);

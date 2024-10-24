@@ -11,13 +11,12 @@ internal sealed class PayNowApiPathBuilder :
     IPayNowApiPaymentRefundsPathBuilder,
     IPayNowApiPaymentRefundPathBuilder
 {
-    private readonly StringBuilder builder;
+    private readonly StringBuilder builder = new();
     private readonly CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
     public PayNowApiPathBuilder()
     {
-        builder = new StringBuilder();
-        AppendPath("v1");
+        AppendPath("v3");
     }
 
     public IPayNowApiPaymentsPathBuilder AddPaymentsPath()
