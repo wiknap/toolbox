@@ -34,7 +34,9 @@ public sealed class PostPaymentRequestTests : TestsBase
                     $"\"lastName\":null," +
                     $"\"phone\":null," +
                     $"\"locale\":null" +
-                $"}}" +
+                $"}}," +
+                $"\"paymentMethodId\":null," +
+                $"\"authorizationCode\":null" +
             $"}}");
     }
 

@@ -122,27 +122,32 @@ public sealed class PayNowClient : IPayNowClient, IDisposable
     {
         using var request = new HttpRequestMessage(method, path);
 
+        AddHeaders(path, content, request);
+
+        using var response = await httpClient.SendAsync(request, ct).ConfigureAwait(false);
+        return await response.Content.ReadFromJsonAsync<T>(ct).ConfigureAwait(false);
+    }
+
+    private void AddHeaders(string path, object? content, HttpRequestMessage request)
+    {
         var idempotencyKey = Guid.NewGuid().ToString();
         var queryParameters = HttpUtility.ParseQueryString(new Uri(new Uri(configuration.ApiPath), path).Query);
-        var queryDictionary = queryParameters.Cast<string>()
-            .ToDictionary(key => key, key => (string[]) [queryParameters[key]!]);
+        var queryDictionary = queryParameters
+            .Cast<string>()
+            .ToDictionary(key => key, key => (string[]) [queryParameters[key] ?? string.Empty]);
 
         string? contentJson = null;
 
         if (content is not null)
         {
             var json = JsonSerializer.Serialize(content, jsonSerializerOptions);
-            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            request.Content = new StringContent(json, encoding, "application/json");
             contentJson = json;
         }
 
         request.Headers.Add(PayNowConstants.HeadersNames.Signature,
             signatureCalculator.Calculate(configuration.ApiKey, idempotencyKey, queryDictionary, contentJson));
-
         request.Headers.Add(PayNowConstants.HeadersNames.IdempotencyKey, idempotencyKey);
-
-        using var response = await httpClient.SendAsync(request, ct).ConfigureAwait(false);
-        return await response.Content.ReadFromJsonAsync<T>(ct).ConfigureAwait(false);
     }
 
     public void Dispose() => signatureCalculator.Dispose();
