@@ -12,7 +12,7 @@ public sealed class GetPaymentMethodsAsyncTests(TestConfiguration configuration)
     public async Task When_GetPaymentMethodsAsync_Then_ReturnsPaymentMethods()
     {
         // Arrange & Act
-        var methods = await PayNowClient.GetPaymentMethodsAsync(ct: Cts.Token);
+        var methods = await PayNowClient.GetPaymentMethodsAsync(ct: CancellationToken);
 
         // Assert
         methods.ShouldNotBeNull();

@@ -14,10 +14,11 @@ public sealed class GetPaymentStatusAsyncTests(TestConfiguration configuration) 
     {
         // Arrange
         var request = new PostPaymentRequest(100M, "Id", "Description", new Buyer { Email = "test@test.com" });
-        var postPaymentResponse = await PayNowClient.PostPaymentRequestAsync(request, Cts.Token);
+        var postPaymentResponse = await PayNowClient.PostPaymentRequestAsync(request, CancellationToken);
+        await Task.Delay(500, CancellationToken);
 
         // Act
-        var response = await PayNowClient.GetPaymentStatusAsync(postPaymentResponse.PaymentId);
+        var response = await PayNowClient.GetPaymentStatusAsync(postPaymentResponse.PaymentId, CancellationToken);
 
         // Assert
         response.ShouldNotBeNull();

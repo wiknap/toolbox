@@ -16,7 +16,7 @@ public sealed class PostPaymentAsyncTests(TestConfiguration configuration) : Tes
         var request = new PostPaymentRequest(100M, "Id", "Description", new Buyer { Email = "test@test.com" });
 
         // Act
-        var response = await PayNowClient.PostPaymentRequestAsync(request, Cts.Token);
+        var response = await PayNowClient.PostPaymentRequestAsync(request, CancellationToken);
 
         // Assert
         response.ShouldNotBeNull();
@@ -41,7 +41,7 @@ public sealed class PostPaymentAsyncTests(TestConfiguration configuration) : Tes
             authorizationCode: "111111");
 
         // Act
-        var response = await WhiteLabelPayNowClient.PostPaymentRequestAsync(request, Cts.Token);
+        var response = await WhiteLabelPayNowClient.PostPaymentRequestAsync(request, CancellationToken);
 
         // Assert
         response.ShouldNotBeNull();
