@@ -1,5 +1,3 @@
 namespace Wiknap.CQRS;
 
-public interface IQuery<out TResult>
-{
-}
+public interface IQuery<out TResult>;
