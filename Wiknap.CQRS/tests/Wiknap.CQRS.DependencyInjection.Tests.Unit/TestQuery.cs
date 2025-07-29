@@ -1,8 +1,6 @@
 namespace Wiknap.CQRS.DependencyInjection.Tests.Unit;
 
-public class TestQuery : IQuery<int>
-{
-}
+public class TestQuery : IQuery<int>;
 
 public class TestQueryHandler : IQueryHandler<TestQuery, int>
 {

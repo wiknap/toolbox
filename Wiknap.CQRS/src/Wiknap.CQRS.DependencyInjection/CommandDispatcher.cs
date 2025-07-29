@@ -4,17 +4,17 @@ namespace Wiknap.CQRS.DependencyInjection;
 
 internal sealed class CommandDispatcher : ICommandDispatcher
 {
-    private readonly IServiceProvider serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
 
     public CommandDispatcher(IServiceProvider serviceProvider)
     {
-        this.serviceProvider = serviceProvider;
+        _serviceProvider = serviceProvider;
     }
 
     public Task DispatchAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
         where TCommand : class, ICommand
     {
-        var handler = serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
+        var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
         return handler.HandleAsync(command, cancellationToken);
     }
 }
