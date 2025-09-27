@@ -13,7 +13,6 @@ public static class Extensions
     {
         services
             .AddScoped<IEmailClient, EmailClient>()
-            .Decorate<IEmailClient, EmailClientTracingDecorator>()
             .Decorate<IEmailClient, EmailClientLoggingDecorator>()
             .Decorate<IEmailClient, EmailClientFilterDecorator>();
 
@@ -23,8 +22,13 @@ public static class Extensions
     public static TracerProviderBuilder AddWiknapEmailInstrumentation(
         this TracerProviderBuilder builder)
     {
-        builder.ConfigureServices(services => services.AddSingleton<WiknapEmailInstrumentation>());
-        
+        builder.ConfigureServices(services =>
+        {
+            services
+                .AddSingleton<WiknapEmailInstrumentation>()
+                .Decorate<IEmailClient, EmailClientTracingDecorator>();
+        });
+
         builder.AddInstrumentation(sp => sp.GetRequiredService<WiknapEmailInstrumentation>());
 
         builder.AddSource(WiknapEmailInstrumentation.ActivitySourceName);
