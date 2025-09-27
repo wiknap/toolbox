@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+
+using OpenTelemetry.Trace;
+
 using Wiknap.Email.DependencyInjection.Decorators;
+using Wiknap.Email.DependencyInjection.OpenTelemetry;
 
 namespace Wiknap.Email.DependencyInjection;
 
@@ -14,5 +18,17 @@ public static class Extensions
             .Decorate<IEmailClient, EmailClientFilterDecorator>();
 
         return services;
+    }
+
+    public static TracerProviderBuilder AddWiknapEmailInstrumentation(
+        this TracerProviderBuilder builder)
+    {
+        builder.ConfigureServices(services => services.AddSingleton<WiknapEmailInstrumentation>());
+        
+        builder.AddInstrumentation(sp => sp.GetRequiredService<WiknapEmailInstrumentation>());
+
+        builder.AddSource(WiknapEmailInstrumentation.ActivitySourceName);
+
+        return builder;
     }
 }
