@@ -6,32 +6,32 @@ namespace Wiknap.Email.DependencyInjection.Decorators;
 
 internal sealed class EmailClientLoggingDecorator : IEmailClient
 {
-    private readonly IEmailClient emailClient;
-    private readonly ILogger<EmailClientLoggingDecorator> logger;
+    private readonly IEmailClient _emailClient;
+    private readonly ILogger<EmailClientLoggingDecorator> _logger;
 
     public EmailClientLoggingDecorator(IEmailClient emailClient, ILogger<EmailClientLoggingDecorator> logger)
     {
-        this.emailClient = emailClient;
-        this.logger = logger;
+        _emailClient = emailClient;
+        _logger = logger;
     }
 
     public async Task SendEmailAsync(EmailMessage message, CancellationToken ct = new())
     {
         var emailsList = string.Join(',', message.Recipients.Select(r => r.EmailAddress.Email));
-        logger.SendingEmail(emailsList);
-        await emailClient.SendEmailAsync(message, ct).ConfigureAwait(false);
-        logger.EmailSent(emailsList);
+        _logger.SendingEmail(emailsList);
+        await _emailClient.SendEmailAsync(message, ct).ConfigureAwait(false);
+        _logger.EmailSent(emailsList);
     }
 
     public async Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = new())
     {
-        logger.SearchingEmail();
-        var content = await emailClient.GetEmailContentAsync(parameters, ct).ConfigureAwait(false);
+        _logger.SearchingEmail();
+        var content = await _emailClient.GetEmailContentAsync(parameters, ct).ConfigureAwait(false);
 
         if (content is not null)
-            logger.EmailFound();
+            _logger.EmailFound();
         else
-            logger.EmailNotFound();
+            _logger.EmailNotFound();
 
         return content;
     }
@@ -39,8 +39,8 @@ internal sealed class EmailClientLoggingDecorator : IEmailClient
     public async Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
-        logger.SendingEmail(mailTo);
-        await emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct).ConfigureAwait(false);
-        logger.EmailSent(mailTo);
+        _logger.SendingEmail(mailTo);
+        await _emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct).ConfigureAwait(false);
+        _logger.EmailSent(mailTo);
     }
 }

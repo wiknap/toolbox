@@ -6,16 +6,16 @@ namespace Wiknap.Email.DependencyInjection.Decorators;
 
 internal sealed class EmailClientFilterDecorator : IEmailClient
 {
-    private readonly IEmailFilterConfiguration configuration;
-    private readonly IEmailClient emailClient;
-    private readonly ILogger<EmailClientFilterDecorator> logger;
+    private readonly IEmailFilterConfiguration _configuration;
+    private readonly IEmailClient _emailClient;
+    private readonly ILogger<EmailClientFilterDecorator> _logger;
 
     public EmailClientFilterDecorator(IEmailClient emailClient, IEmailFilterConfiguration configuration,
         ILogger<EmailClientFilterDecorator> logger)
     {
-        this.emailClient = emailClient;
-        this.configuration = configuration;
-        this.logger = logger;
+        _emailClient = emailClient;
+        _configuration = configuration;
+        _logger = logger;
     }
 
     public Task SendEmailAsync(EmailMessage message, CancellationToken ct = new())
@@ -26,24 +26,24 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
                 continue;
 
             message.Recipients.Remove(recipient);
-            logger.EmailExcluded(recipient.EmailAddress.Email);
+            _logger.EmailExcluded(recipient.EmailAddress.Email);
         }
 
         return message.Recipients.Count > 0
-            ? emailClient.SendEmailAsync(message, ct)
+            ? _emailClient.SendEmailAsync(message, ct)
             : Task.CompletedTask;
     }
 
     public Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = new())
-        => emailClient.GetEmailContentAsync(parameters, ct);
+        => _emailClient.GetEmailContentAsync(parameters, ct);
 
     public Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
         if (ShouldSend(mailTo))
-            return emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct);
+            return _emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct);
 
-        logger.EmailExcluded(mailTo);
+        _logger.EmailExcluded(mailTo);
         return Task.CompletedTask;
     }
 
@@ -57,10 +57,10 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
 
     private bool IsExcluded(string mailTo)
     {
-        if (configuration.ExcludeAll)
+        if (_configuration.ExcludeAll)
             return true;
 
-        foreach (var rule in configuration.Exclude)
+        foreach (var rule in _configuration.Exclude)
         {
             if (rule.Validate(mailTo))
                 return true;
@@ -71,7 +71,7 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
 
     private bool IsIncluded(string mailTo)
     {
-        foreach (var rule in configuration.Include)
+        foreach (var rule in _configuration.Include)
         {
             if (rule.Validate(mailTo))
                 return true;

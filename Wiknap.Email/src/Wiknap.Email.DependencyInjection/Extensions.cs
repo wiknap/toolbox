@@ -9,6 +9,7 @@ public static class Extensions
     {
         services
             .AddScoped<IEmailClient, EmailClient>()
+            .Decorate<IEmailClient, EmailClientTracingDecorator>()
             .Decorate<IEmailClient, EmailClientLoggingDecorator>()
             .Decorate<IEmailClient, EmailClientFilterDecorator>();
 
