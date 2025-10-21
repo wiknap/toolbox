@@ -14,21 +14,21 @@ namespace Wiknap.Email;
 [PublicAPI]
 public class EmailClient : IEmailClient
 {
-    private readonly IEmailClientConfiguration configuration;
-    private readonly MailboxAddress senderMailboxAddress;
+    private readonly IEmailClientConfiguration _configuration;
+    private readonly MailboxAddress _senderMailboxAddress;
 
     public EmailClient(IEmailClientConfiguration configuration)
     {
-        this.configuration = configuration;
-        var address = !string.IsNullOrEmpty(this.configuration.SenderEmail)
-            ? this.configuration.SenderEmail
-            : this.configuration.Login;
-        senderMailboxAddress = new MailboxAddress(this.configuration.SenderName, address);
+        _configuration = configuration;
+        var address = !string.IsNullOrEmpty(_configuration.SenderEmail)
+            ? _configuration.SenderEmail
+            : _configuration.Login;
+        _senderMailboxAddress = new MailboxAddress(_configuration.SenderName, address);
     }
 
     public async Task SendEmailAsync(EmailMessage message, CancellationToken ct = default)
     {
-        using var mimeMessage = message.ToMimeMessage(senderMailboxAddress);
+        using var mimeMessage = message.ToMimeMessage(_senderMailboxAddress);
         using var client = await GetSmtpClientAsync(ct).ConfigureAwait(false);
         await client.SendAsync(mimeMessage, ct).ConfigureAwait(false);
         await client.DisconnectAsync(true, ct).ConfigureAwait(false);
@@ -44,11 +44,14 @@ public class EmailClient : IEmailClient
 
         var id = searchResult.Last();
         var message = await client.Inbox.GetMessageAsync(id, ct).ConfigureAwait(false);
-        if (parameters.DeliveredAfter.HasValue && message.Date <= new DateTimeOffset(parameters.DeliveredAfter.Value))
+        if (parameters.DeliveredAfter.HasValue && IsMessageDeliveredAfter(parameters.DeliveredAfter.Value, message))
             return null;
 
         return message?.GetEmailContent();
     }
+
+    private static bool IsMessageDeliveredAfter(DateTimeOffset dto, MimeMessage message)
+        => message.Date <= dto.TrimMilliseconds();
 
     private static SearchQuery GetSearchQuery(SearchParameters parameters)
     {
@@ -61,7 +64,10 @@ public class EmailClient : IEmailClient
             queries.Add(SearchQuery.SubjectContains(parameters.Subject));
 
         if (parameters.DeliveredAfter.HasValue)
-            queries.Add(SearchQuery.DeliveredAfter(parameters.DeliveredAfter.Value));
+        {
+            var dateTime = parameters.DeliveredAfter.Value.UtcDateTime.TrimMilliseconds();
+            queries.Add(SearchQuery.DeliveredAfter(dateTime));
+        }
 
         SearchQuery? resultQuery = null;
         foreach (var query in queries)
@@ -81,7 +87,7 @@ public class EmailClient : IEmailClient
     private async Task<SmtpClient> GetSmtpClientAsync(CancellationToken ct)
     {
         var client = new SmtpClient();
-        await ConnectAndAuthenticateAsync(client, configuration.SmtpHost, configuration.SmtpPort, ct)
+        await ConnectAndAuthenticateAsync(client, _configuration.SmtpHost, _configuration.SmtpPort, ct)
             .ConfigureAwait(false);
         return client;
     }
@@ -89,7 +95,7 @@ public class EmailClient : IEmailClient
     private async Task<ImapClient> GetImapClientAsync(CancellationToken ct)
     {
         var client = new ImapClient();
-        await ConnectAndAuthenticateAsync(client, configuration.ImapHost, configuration.ImapPort, ct)
+        await ConnectAndAuthenticateAsync(client, _configuration.ImapHost, _configuration.ImapPort, ct)
             .ConfigureAwait(false);
         return client;
     }
@@ -98,6 +104,6 @@ public class EmailClient : IEmailClient
         CancellationToken ct = default)
     {
         await service.ConnectAsync(host, port, cancellationToken: ct).ConfigureAwait(false);
-        await service.AuthenticateAsync(configuration.Login, configuration.Password, ct).ConfigureAwait(false);
+        await service.AuthenticateAsync(_configuration.Login, _configuration.Password, ct).ConfigureAwait(false);
     }
 }

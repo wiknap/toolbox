@@ -12,7 +12,7 @@ namespace Wiknap.Email.Tests.Integration.Fixture;
 public abstract class IntegrationTestsBase : IDisposable
 {
     protected readonly IEmailClient EmailClient;
-    private readonly IEmailClient userEmailClient;
+    private readonly IEmailClient _userEmailClient;
     protected const string UserEmail = EmailServer.UserEmail;
     protected readonly Faker Faker = new();
     protected readonly CancellationTokenSource Cts = new();
@@ -24,7 +24,7 @@ public abstract class IntegrationTestsBase : IDisposable
         EmailClient = new Email.EmailClient(config);
         var userConfig = new TestEmailClientConfiguration(EmailServer.Host, emailServer.SmtpPort, EmailServer.Host,
             emailServer.ImapPort, EmailServer.UserEmail, EmailServer.UserPassword);
-        userEmailClient = new Email.EmailClient(userConfig);
+        _userEmailClient = new Email.EmailClient(userConfig);
     }
 
     protected async Task<EmailContent?> GetUserEmailContentAsync(SearchParameters searchParameters)
@@ -33,7 +33,7 @@ public abstract class IntegrationTestsBase : IDisposable
 
         while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
         {
-            var content = await userEmailClient
+            var content = await _userEmailClient
                 .GetEmailContentAsync(
                     new SearchParameters
                     {

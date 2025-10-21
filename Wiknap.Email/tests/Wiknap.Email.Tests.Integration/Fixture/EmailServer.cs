@@ -8,28 +8,28 @@ public sealed class EmailServer : IAsyncLifetime
 {
     public const string UserEmail = "user@example.com";
     public const string UserPassword = "passwd123";
-    private readonly CancellationTokenSource cancellationTokenSource = new();
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
 
-    private readonly MailServerContainer mailServerContainer = new MailServerBuilder()
+    private readonly MailServerContainer _mailServerContainer = new MailServerBuilder()
         .Build();
 
-    public ushort SmtpPort => mailServerContainer.SmtpPort;
-    public ushort ImapPort => mailServerContainer.ImapPort;
+    public ushort SmtpPort => _mailServerContainer.SmtpPort;
+    public ushort ImapPort => _mailServerContainer.ImapPort;
     public static string Host => MailServerBuilder.Host;
-    public string AdminEmail => mailServerContainer.AdminEmail;
-    public string AdminPassword => mailServerContainer.AdminPassword;
+    public string AdminEmail => _mailServerContainer.AdminEmail;
+    public string AdminPassword => _mailServerContainer.AdminPassword;
 
     public async Task InitializeAsync()
     {
-        await mailServerContainer.StartAsync(cancellationTokenSource.Token).ConfigureAwait(false);
-        await mailServerContainer.AddEmailAsync(UserEmail, UserPassword, cancellationTokenSource.Token)
+        await _mailServerContainer.StartAsync(_cancellationTokenSource.Token).ConfigureAwait(false);
+        await _mailServerContainer.AddEmailAsync(UserEmail, UserPassword, _cancellationTokenSource.Token)
             .ConfigureAwait(false);
     }
 
     async Task IAsyncLifetime.DisposeAsync()
     {
-        await cancellationTokenSource.CancelAsync().ConfigureAwait(false);
-        await mailServerContainer.StopAsync().ConfigureAwait(false);
+        await _cancellationTokenSource.CancelAsync().ConfigureAwait(false);
+        await _mailServerContainer.StopAsync().ConfigureAwait(false);
     }
 }
 

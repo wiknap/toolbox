@@ -8,7 +8,7 @@ namespace Wiknap.Email.Tests.Unit;
 
 public sealed class EmailClientExtensionsTests : TestsBase
 {
-    private readonly IEmailClient client = Substitute.For<IEmailClient>();
+    private readonly IEmailClient _client = Substitute.For<IEmailClient>();
 
     [Fact]
     public async Task Given_ValidEmailAndSubjectAndTextMessage_When_SendEmailAsync_Then_ValidEmailMessageWithTextBodySend()
@@ -19,10 +19,10 @@ public sealed class EmailClientExtensionsTests : TestsBase
         var message = Faker.Lorem.Sentence();
 
         // Act
-        await client.SendEmailAsync(email, subject, message);
+        await _client.SendEmailAsync(email, subject, message);
 
         // Assert
-        await client.Received().SendEmailAsync(
+        await _client.Received().SendEmailAsync(
             Arg.Is<EmailMessage>(m =>
                 m.Subject == subject &&
                 m.Recipients.Count == 1 &&
@@ -44,10 +44,10 @@ public sealed class EmailClientExtensionsTests : TestsBase
         var message = Faker.Lorem.Sentence();
 
         // Act
-        await client.SendEmailAsync(email, subject, message, true);
+        await _client.SendEmailAsync(email, subject, message, true);
 
         // Assert
-        await client.Received().SendEmailAsync(
+        await _client.Received().SendEmailAsync(
             Arg.Is<EmailMessage>(m =>
                 m.Subject == subject &&
                 m.Recipients.Count == 1 &&
@@ -69,10 +69,10 @@ public sealed class EmailClientExtensionsTests : TestsBase
         var message = Faker.Lorem.Sentence();
 
         // Act
-        await client.SendEmailAsync([recipient], subject, message);
+        await _client.SendEmailAsync([recipient], subject, message);
 
         // Assert
-        await client.Received().SendEmailAsync(
+        await _client.Received().SendEmailAsync(
             Arg.Is<EmailMessage>(m =>
                 m.Subject == subject &&
                 m.Recipients.Count == 1 &&
@@ -94,10 +94,10 @@ public sealed class EmailClientExtensionsTests : TestsBase
         var message = Faker.Lorem.Sentence();
 
         // Act
-        await client.SendEmailAsync([recipient], subject, message, true);
+        await _client.SendEmailAsync([recipient], subject, message, true);
 
         // Assert
-        await client.Received().SendEmailAsync(
+        await _client.Received().SendEmailAsync(
             Arg.Is<EmailMessage>(m =>
                 m.Subject == subject &&
                 m.Recipients.Count == 1 &&

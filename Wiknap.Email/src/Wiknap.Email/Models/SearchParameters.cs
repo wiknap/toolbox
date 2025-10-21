@@ -4,5 +4,5 @@ public record SearchParameters
 {
     public string? SenderEmail { get; init; }
     public string? Subject { get; init; }
-    public DateTime? DeliveredAfter { get; init; }
+    public DateTimeOffset? DeliveredAfter { get; init; }
 }
