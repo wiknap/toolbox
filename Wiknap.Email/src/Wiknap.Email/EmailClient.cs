@@ -44,13 +44,13 @@ public class EmailClient : IEmailClient
 
         var id = searchResult.Last();
         var message = await client.Inbox.GetMessageAsync(id, ct).ConfigureAwait(false);
-        if (parameters.DeliveredAfter.HasValue && IsMessageDeliveredAfter(parameters.DeliveredAfter.Value, message))
+        if (parameters.DeliveredAfter.HasValue && IsMessageDeliveredBefore(parameters.DeliveredAfter.Value, message))
             return null;
 
         return message?.GetEmailContent();
     }
 
-    private static bool IsMessageDeliveredAfter(DateTimeOffset dto, MimeMessage message)
+    private static bool IsMessageDeliveredBefore(DateTimeOffset dto, MimeMessage message)
         => message.Date <= dto.TrimMilliseconds();
 
     private static SearchQuery GetSearchQuery(SearchParameters parameters)
