@@ -4,7 +4,7 @@ namespace Wiknap.Email;
 
 public interface IEmailClient
 {
-    public Task SendEmailAsync(EmailMessage message, CancellationToken ct = default);
+    Task SendEmailAsync(EmailMessage message, CancellationToken ct = default);
 
-    public Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = default);
+    Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = default);
 }

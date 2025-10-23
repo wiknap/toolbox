@@ -2,12 +2,12 @@ namespace Wiknap.Email;
 
 public interface IEmailClientConfiguration
 {
-    public string SmtpHost { get; }
-    public int SmtpPort { get; }
-    public string ImapHost { get; }
-    public int ImapPort { get; }
-    public string Login { get; }
-    public string Password { get; }
-    public string? SenderEmail { get; }
-    public string SenderName { get; }
+    string SmtpHost { get; }
+    int SmtpPort { get; }
+    string ImapHost { get; }
+    int ImapPort { get; }
+    string Login { get; }
+    string Password { get; }
+    string? SenderEmail { get; }
+    string SenderName { get; }
 }
