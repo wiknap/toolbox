@@ -6,24 +6,28 @@ namespace Wiknap.Email.Tests.Integration.Fixture;
 
 public sealed class EmailServer : IAsyncLifetime
 {
-    public const string UserEmail = "user@example.com";
-    public const string UserPassword = "passwd123";
+    public const string AdminEmail = "admin@example.com";
+    public const string DefaultPassword = "passwd123";
     private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private readonly HashSet<string> _addedUsers = [];
 
     private readonly MailServerContainer _mailServerContainer = new MailServerBuilder()
+        .WithAdminEmail(AdminEmail)
+        .WithAdminPassword(DefaultPassword)
         .Build();
 
     public ushort SmtpPort => _mailServerContainer.SmtpPort;
     public ushort ImapPort => _mailServerContainer.ImapPort;
     public static string Host => MailServerBuilder.Host;
-    public string AdminEmail => _mailServerContainer.AdminEmail;
-    public string AdminPassword => _mailServerContainer.AdminPassword;
 
     public async Task InitializeAsync()
+        => await _mailServerContainer.StartAsync(_cancellationTokenSource.Token).ConfigureAwait(false);
+
+    public Task AddUserAsync(string email)
     {
-        await _mailServerContainer.StartAsync(_cancellationTokenSource.Token).ConfigureAwait(false);
-        await _mailServerContainer.AddEmailAsync(UserEmail, UserPassword, _cancellationTokenSource.Token)
-            .ConfigureAwait(false);
+        return !_addedUsers.Add(email)
+            ? Task.CompletedTask
+            : _mailServerContainer.AddEmailAsync(email, DefaultPassword, CancellationToken.None);
     }
 
     async Task IAsyncLifetime.DisposeAsync()

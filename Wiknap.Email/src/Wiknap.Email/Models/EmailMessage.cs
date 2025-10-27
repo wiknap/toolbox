@@ -1,6 +1,6 @@
 namespace Wiknap.Email.Models;
 
-public record EmailMessage : IAsyncDisposable
+public sealed record EmailMessage : IAsyncDisposable
 {
     public string? Subject { get; set; }
     public HashSet<Recipient> Recipients { get; } = [];

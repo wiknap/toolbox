@@ -9,22 +9,45 @@ using Xunit;
 namespace Wiknap.Email.Tests.Integration.Fixture;
 
 [Collection("EmailServer")]
-public abstract class IntegrationTestsBase : IDisposable
+public abstract class IntegrationTestsBase : IAsyncLifetime
 {
+    private const string Domain = "example.com";
+    private readonly EmailServer _emailServer;
     protected readonly IEmailClient EmailClient;
-    private readonly IEmailClient _userEmailClient;
-    protected const string UserEmail = EmailServer.UserEmail;
+    protected readonly IEmailClient UserEmailClient;
     protected readonly Faker Faker = new();
-    protected readonly CancellationTokenSource Cts = new();
+
+    protected const string UserEmail = $"user@{Domain}";
+    protected readonly string AdminEmail;
 
     protected IntegrationTestsBase(EmailServer emailServer)
     {
-        var config = new TestEmailClientConfiguration(EmailServer.Host, emailServer.SmtpPort, EmailServer.Host,
-            emailServer.ImapPort, emailServer.AdminEmail, emailServer.AdminPassword);
+        _emailServer = emailServer;
+        AdminEmail = EmailServer.AdminEmail;
+        var config = CreateConfig(EmailServer.AdminEmail);
         EmailClient = new Email.EmailClient(config);
-        var userConfig = new TestEmailClientConfiguration(EmailServer.Host, emailServer.SmtpPort, EmailServer.Host,
-            emailServer.ImapPort, EmailServer.UserEmail, EmailServer.UserPassword);
-        _userEmailClient = new Email.EmailClient(userConfig);
+        var userConfig = CreateConfig(UserEmail);
+        UserEmailClient = new Email.EmailClient(userConfig);
+    }
+
+    public Task InitializeAsync() => _emailServer.AddUserAsync(UserEmail);
+
+    public Task DisposeAsync() => Task.CompletedTask;
+
+    protected string GetNewEmail() => Faker.Internet.Email(provider: Domain);
+
+    private TestEmailClientConfiguration CreateConfig(string email)
+    {
+        return new TestEmailClientConfiguration(EmailServer.Host, _emailServer.SmtpPort, EmailServer.Host,
+            _emailServer.ImapPort, email, EmailServer.DefaultPassword);
+    }
+
+    protected async Task SendEmailAsync(string email, EmailMessage message)
+    {
+        await _emailServer.AddUserAsync(email);
+        var config = CreateConfig(email);
+        var client = new Email.EmailClient(config);
+        await client.SendEmailAsync(message);
     }
 
     protected async Task<EmailContent?> GetUserEmailContentAsync(SearchParameters searchParameters)
@@ -33,12 +56,8 @@ public abstract class IntegrationTestsBase : IDisposable
 
         while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
         {
-            var content = await _userEmailClient
-                .GetEmailContentAsync(
-                    new SearchParameters
-                    {
-                        SenderEmail = searchParameters.SenderEmail, Subject = searchParameters.Subject
-                    }, Cts.Token).ConfigureAwait(false);
+            var content = await UserEmailClient
+                .GetEmailContentAsync(searchParameters).ConfigureAwait(false);
 
             if (content is not null)
                 return content;
@@ -47,5 +66,20 @@ public abstract class IntegrationTestsBase : IDisposable
         return null;
     }
 
-    public void Dispose() => Cts.Dispose();
+    protected async Task<IReadOnlyCollection<ReceivedEmailMessage>> GetEmailsAsync(SearchParameters searchParameters, int expectedCount)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        IReadOnlyCollection<ReceivedEmailMessage> messages = [];
+        while (stopwatch.Elapsed < TimeSpan.FromSeconds(3))
+        {
+            messages = await UserEmailClient
+                .GetEmailsAsync(searchParameters).ConfigureAwait(false);
+
+            if (messages.Count >= expectedCount)
+                return messages;
+        }
+
+        return messages;
+    }
 }

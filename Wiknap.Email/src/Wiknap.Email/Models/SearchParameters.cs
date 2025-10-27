@@ -1,6 +1,6 @@
 namespace Wiknap.Email.Models;
 
-public record SearchParameters
+public sealed record SearchParameters
 {
     public string? SenderEmail { get; init; }
     public string? Subject { get; init; }

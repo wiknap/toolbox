@@ -7,7 +7,7 @@ public interface IEmailFilterConfiguration
     IEnumerable<EmailRule> Include { get; }
 }
 
-public record EmailRule(EmailRuleType Type, string Value);
+public sealed record EmailRule(EmailRuleType Type, string Value);
 
 public enum EmailRuleType
 {

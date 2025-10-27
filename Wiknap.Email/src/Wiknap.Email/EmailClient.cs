@@ -44,10 +44,44 @@ public class EmailClient : IEmailClient
 
         var id = searchResult.Last();
         var message = await client.Inbox.GetMessageAsync(id, ct).ConfigureAwait(false);
+
+        if (message is null)
+            return null;
+
         if (parameters.DeliveredAfter.HasValue && IsMessageDeliveredBefore(parameters.DeliveredAfter.Value, message))
             return null;
 
-        return message?.GetEmailContent();
+        return message.GetEmailContent();
+    }
+
+    public async Task<IReadOnlyCollection<ReceivedEmailMessage>> GetEmailsAsync(SearchParameters parameters,
+        int maxMessages = 10, CancellationToken ct = default)
+    {
+        using var client = await GetImapClientAsync(ct).ConfigureAwait(false);
+        await client.Inbox.OpenAsync(FolderAccess.ReadOnly, ct).ConfigureAwait(false);
+        var searchResult = await client.Inbox.SearchAsync(GetSearchQuery(parameters), ct).ConfigureAwait(false);
+        if (searchResult.Count == 0)
+            return [];
+
+        var messages = new HashSet<ReceivedEmailMessage>();
+
+        foreach (var id in searchResult.Reverse())
+        {
+            var message = await client.Inbox.GetMessageAsync(id, ct).ConfigureAwait(false);
+            if (message is null)
+                continue;
+
+            if (parameters.DeliveredAfter.HasValue &&
+                IsMessageDeliveredBefore(parameters.DeliveredAfter.Value, message))
+                continue;
+
+            messages.Add(new ReceivedEmailMessage(message.Subject, message.GetEmailContent()));
+
+            if (messages.Count == maxMessages)
+                return messages;
+        }
+
+        return messages;
     }
 
     private static bool IsMessageDeliveredBefore(DateTimeOffset dto, MimeMessage message)
