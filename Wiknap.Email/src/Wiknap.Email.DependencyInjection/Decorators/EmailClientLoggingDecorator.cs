@@ -36,6 +36,19 @@ internal sealed class EmailClientLoggingDecorator : IEmailClient
         return content;
     }
 
+    public async Task<IReadOnlyCollection<ReceivedEmailMessage>> GetEmailsAsync(SearchParameters parameters, int maxMessages = 10, CancellationToken ct = new())
+    {
+        _logger.SearchingEmails();
+        var messages = await _emailClient.GetEmailsAsync(parameters, maxMessages, ct).ConfigureAwait(false);
+
+        if (messages.Count > 0)
+            _logger.EmailsFound(messages.Count);
+        else
+            _logger.EmailsNotFound();
+
+        return messages;
+    }
+
     public async Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {

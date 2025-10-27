@@ -19,19 +19,26 @@ internal sealed class EmailClientTracingDecorator : IEmailClient
     public async Task SendEmailAsync(EmailMessage message, CancellationToken ct = new())
     {
         using (_wiknapEmailInstrumentation.ActivitySource.StartActivity(ActivityKind.Client))
-            await _emailClient.SendEmailAsync(message, ct);
+            await _emailClient.SendEmailAsync(message, ct).ConfigureAwait(false);
     }
 
     public async Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = new())
     {
         using (_wiknapEmailInstrumentation.ActivitySource.StartActivity(ActivityKind.Client))
-            return await _emailClient.GetEmailContentAsync(parameters, ct);
+            return await _emailClient.GetEmailContentAsync(parameters, ct).ConfigureAwait(false);
+    }
+
+    public async Task<IReadOnlyCollection<ReceivedEmailMessage>> GetEmailsAsync(SearchParameters parameters,
+        int maxMessages = 10, CancellationToken ct = new())
+    {
+        using (_wiknapEmailInstrumentation.ActivitySource.StartActivity(ActivityKind.Client))
+            return await _emailClient.GetEmailsAsync(parameters, maxMessages, ct).ConfigureAwait(false);
     }
 
     public async Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
         using (_wiknapEmailInstrumentation.ActivitySource.StartActivity(ActivityKind.Client))
-            await _emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct);
+            await _emailClient.SendEmailAsync(mailTo, subject, message, isHtml, ct).ConfigureAwait(false);
     }
 }

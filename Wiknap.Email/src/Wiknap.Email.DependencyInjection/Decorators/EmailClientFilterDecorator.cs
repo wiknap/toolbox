@@ -37,6 +37,9 @@ internal sealed class EmailClientFilterDecorator : IEmailClient
     public Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = new())
         => _emailClient.GetEmailContentAsync(parameters, ct);
 
+    public Task<IReadOnlyCollection<ReceivedEmailMessage>> GetEmailsAsync(SearchParameters parameters, int maxMessages = 10, CancellationToken ct = new())
+        => _emailClient.GetEmailsAsync(parameters, maxMessages, ct);
+
     public Task SendEmailAsync(string mailTo, string subject, string message, bool isHtml = false,
         CancellationToken ct = default)
     {
