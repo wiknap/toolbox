@@ -1,8 +1,8 @@
 namespace Wiknap.CQRS.DependencyInjection.Tests.Unit;
 
-public class TestQuery : IQuery<int>;
+public sealed record TestQuery : IQuery<int>;
 
-public class TestQueryHandler : IQueryHandler<TestQuery, int>
+internal sealed class TestQueryHandler : IQueryHandler<TestQuery, int>
 {
     public Task<int> HandleAsync(TestQuery query, CancellationToken cancellationToken) => Task.FromResult(1);
 }

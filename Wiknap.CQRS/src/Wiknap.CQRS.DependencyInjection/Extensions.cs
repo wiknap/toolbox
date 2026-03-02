@@ -12,10 +12,10 @@ public static class Extensions
             .AddScoped<ICommandDispatcher, CommandDispatcher>()
             .AddScoped<IQueryDispatcher, QueryDispatcher>()
             .Scan(s => s.FromAssemblies(assembly)
-                .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
+                .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)), false)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
-                .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
+                .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)), false)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
