@@ -30,9 +30,9 @@ public abstract class IntegrationTestsBase : IAsyncLifetime
         UserEmailClient = new Email.EmailClient(userConfig);
     }
 
-    public Task InitializeAsync() => _emailServer.AddUserAsync(UserEmail);
+    public async ValueTask InitializeAsync() => await _emailServer.AddUserAsync(UserEmail);
 
-    public Task DisposeAsync() => Task.CompletedTask;
+    public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 
     protected string GetNewEmail() => Faker.Internet.Email(provider: Domain);
 

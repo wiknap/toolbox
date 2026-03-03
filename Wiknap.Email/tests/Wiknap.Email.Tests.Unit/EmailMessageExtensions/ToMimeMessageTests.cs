@@ -76,6 +76,7 @@ public sealed class ToMimeMessageTests : TestsBase
         var mimePart = multipart.OfType<MimePart>().SingleOrDefault(p => p.ContentType.MimeType == "image/png");
         mimePart.ShouldNotBeNull();
         mimePart.FileName.ShouldBe(fileName);
+        mimePart.Content.ShouldNotBeNull();
         mimePart.Content.Stream.ShouldNotBeNull();
         mimeMessage.Attachments.Count().ShouldBe(1);
     }
@@ -118,6 +119,7 @@ public sealed class ToMimeMessageTests : TestsBase
         var mimePart = multipart.OfType<MimePart>().SingleOrDefault(p => p.ContentType.MimeType == "image/png");
         mimePart.ShouldNotBeNull();
         mimePart.FileName.ShouldBe(fileName);
+        mimePart.Content.ShouldNotBeNull();
         mimePart.Content.Stream.ShouldNotBeNull();
         mimeMessage.Attachments.Count().ShouldBe(1);
     }

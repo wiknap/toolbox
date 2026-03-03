@@ -54,9 +54,15 @@ public static class MimeMessageExtensions
         switch (attachment)
         {
             case MessagePart rfc822:
+                if (rfc822.Message is null)
+                    return null;
+
                 rfc822.Message.WriteTo(memoryStream);
                 break;
             case MimePart part:
+                if (part.Content is null)
+                    return null;
+
                 part.Content.DecodeTo(memoryStream);
                 break;
             default:

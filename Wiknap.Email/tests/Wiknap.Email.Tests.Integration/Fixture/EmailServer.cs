@@ -20,7 +20,7 @@ public sealed class EmailServer : IAsyncLifetime
     public ushort ImapPort => _mailServerContainer.ImapPort;
     public static string Host => MailServerBuilder.Host;
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
         => await _mailServerContainer.StartAsync(_cancellationTokenSource.Token).ConfigureAwait(false);
 
     public Task AddUserAsync(string email)
@@ -30,7 +30,7 @@ public sealed class EmailServer : IAsyncLifetime
             : _mailServerContainer.AddEmailAsync(email, DefaultPassword, CancellationToken.None);
     }
 
-    async Task IAsyncLifetime.DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         await _cancellationTokenSource.CancelAsync().ConfigureAwait(false);
         await _mailServerContainer.StopAsync().ConfigureAwait(false);
