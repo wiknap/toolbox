@@ -11,7 +11,7 @@
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0"/>
         <PackageVersion Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.1.0"/>
         <PackageVersion Include="Shouldly" Version="4.3.0"/>
-        <PackageVersion Include="Wiknap.PayNow" Version="3.0.47"/>
+        <PackageVersion Include="Wiknap.PayNow" Version="3.0.48"/>
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
