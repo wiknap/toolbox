@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Net.Smtp;
@@ -11,7 +9,6 @@ using Wiknap.Email.Models;
 
 namespace Wiknap.Email;
 
-[PublicAPI]
 public class EmailClient : IEmailClient
 {
     private readonly IEmailClientConfiguration _configuration;
@@ -37,6 +34,10 @@ public class EmailClient : IEmailClient
     public async Task<EmailContent?> GetEmailContentAsync(SearchParameters parameters, CancellationToken ct = default)
     {
         using var client = await GetImapClientAsync(ct).ConfigureAwait(false);
+
+        if (client.Inbox is null)
+            return null;
+
         await client.Inbox.OpenAsync(FolderAccess.ReadOnly, ct).ConfigureAwait(false);
         var searchResult = await client.Inbox.SearchAsync(GetSearchQuery(parameters), ct).ConfigureAwait(false);
         if (searchResult.Count == 0)
@@ -44,9 +45,6 @@ public class EmailClient : IEmailClient
 
         var id = searchResult.Last();
         var message = await client.Inbox.GetMessageAsync(id, ct).ConfigureAwait(false);
-
-        if (message is null)
-            return null;
 
         if (parameters.DeliveredAfter.HasValue && IsMessageDeliveredBefore(parameters.DeliveredAfter.Value, message))
             return null;
@@ -58,6 +56,10 @@ public class EmailClient : IEmailClient
         int maxMessages = 10, CancellationToken ct = default)
     {
         using var client = await GetImapClientAsync(ct).ConfigureAwait(false);
+
+        if (client.Inbox is null)
+            return [];
+
         await client.Inbox.OpenAsync(FolderAccess.ReadOnly, ct).ConfigureAwait(false);
         var searchResult = await client.Inbox.SearchAsync(GetSearchQuery(parameters), ct).ConfigureAwait(false);
         if (searchResult.Count == 0)
@@ -68,8 +70,6 @@ public class EmailClient : IEmailClient
         foreach (var id in searchResult.Reverse())
         {
             var message = await client.Inbox.GetMessageAsync(id, ct).ConfigureAwait(false);
-            if (message is null)
-                continue;
 
             if (parameters.DeliveredAfter.HasValue &&
                 IsMessageDeliveredBefore(parameters.DeliveredAfter.Value, message))
