@@ -2,7 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Wiknap.CQRS.DependencyInjection;
 
-internal sealed class QueryHandlerWrapper<TQuery, TResponse> : QueryHandlerWrapper<TResponse> where TQuery : class, IQuery<TResponse>
+internal sealed class QueryHandlerWrapper<TQuery, TResponse> : QueryHandlerWrapper<TResponse>
+    where TQuery : class, IQuery<TResponse>
 {
     internal override Task<TResponse> Handle(IQuery<TResponse> query, IServiceProvider serviceProvider,
         CancellationToken cancellationToken)

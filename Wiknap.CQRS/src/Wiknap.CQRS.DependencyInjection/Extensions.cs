@@ -17,6 +17,9 @@ public static class Extensions
                 .WithScopedLifetime()
                 .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)), false)
                 .AsImplementedInterfaces()
+                .WithScopedLifetime()
+                .AddClasses(c => c.AssignableTo(typeof(IAsyncEnumerableQueryHandler<,>)), false)
+                .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
         return services;

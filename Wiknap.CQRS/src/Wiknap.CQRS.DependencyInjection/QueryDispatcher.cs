@@ -26,4 +26,15 @@ internal sealed class QueryDispatcher : IQueryDispatcher
         var wrapper = instance as QueryHandlerWrapper<TQueryResult> ?? throw new InvalidOperationException();
         return wrapper.Handle(query, _serviceProvider, cancellationToken);
     }
+
+    public IAsyncEnumerable<TQueryResult> DispatchAsync<TQueryResult>(IAsyncEnumerableQuery<TQueryResult> query,
+        CancellationToken cancellationToken = default)
+    {
+        var wrapperType =
+            typeof(AsyncEnumerableQueryHandlerWrapper<,>).MakeGenericType(query.GetType(), typeof(TQueryResult));
+        var instance = Activator.CreateInstance(wrapperType);
+        var wrapper = instance as AsyncEnumerableQueryHandlerWrapper<TQueryResult> ??
+                      throw new InvalidOperationException();
+        return wrapper.Handle(query, _serviceProvider, cancellationToken);
+    }
 }

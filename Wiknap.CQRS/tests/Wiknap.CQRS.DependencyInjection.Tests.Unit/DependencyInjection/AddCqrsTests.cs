@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-
 using Shouldly;
-
 using Xunit;
 
 namespace Wiknap.CQRS.DependencyInjection.Tests.Unit.DependencyInjection;
@@ -21,18 +19,24 @@ public sealed class AddCqrsTests
         var queryDispatcher = p.GetService<IQueryDispatcher>();
         var callingAssemblyCommandHandler = p.GetService<ICommandHandler<TestCommand>>();
         var callingAssemblyQueryHandler = p.GetService<IQueryHandler<TestQuery, int>>();
+        var callingAssemblyAsyncQueryHandler =
+            p.GetService<IAsyncEnumerableQueryHandler<TestAsyncEnumerableQuery, int>>();
         var referenceAssemblyCommandHandler =
             p.GetService<ICommandHandler<CQRS.Tests.Unit.TestProject.TestCommand>>();
         var referenceAssemblyQueryHandler =
             p.GetService<IQueryHandler<CQRS.Tests.Unit.TestProject.TestQuery, int>>();
+        var referenceAssemblyAsyncQueryHandler =
+            p.GetService<IAsyncEnumerableQueryHandler<CQRS.Tests.Unit.TestProject.TestAsyncEnumerableQuery, int>>();
 
         // Assert
         commandDispatcher.ShouldNotBeNull();
         queryDispatcher.ShouldNotBeNull();
         callingAssemblyCommandHandler.ShouldNotBeNull();
         callingAssemblyQueryHandler.ShouldNotBeNull();
+        callingAssemblyAsyncQueryHandler.ShouldNotBeNull();
         referenceAssemblyCommandHandler.ShouldBeNull();
         referenceAssemblyQueryHandler.ShouldBeNull();
+        referenceAssemblyAsyncQueryHandler.ShouldBeNull();
     }
 
     [Fact]
@@ -46,15 +50,21 @@ public sealed class AddCqrsTests
         var p = sc.BuildServiceProvider();
         var callingAssemblyCommandHandler = p.GetService<ICommandHandler<TestCommand>>();
         var callingAssemblyQueryHandler = p.GetService<IQueryHandler<TestQuery, int>>();
+        var callingAssemblyAsyncQueryHandler =
+            p.GetService<IAsyncEnumerableQueryHandler<TestAsyncEnumerableQuery, int>>();
         var referenceAssemblyCommandHandler =
             p.GetService<ICommandHandler<CQRS.Tests.Unit.TestProject.TestCommand>>();
         var referenceAssemblyQueryHandler =
             p.GetService<IQueryHandler<CQRS.Tests.Unit.TestProject.TestQuery, int>>();
+        var referenceAssemblyAsyncQueryHandler =
+            p.GetService<IAsyncEnumerableQueryHandler<CQRS.Tests.Unit.TestProject.TestAsyncEnumerableQuery, int>>();
 
         // Assert
         callingAssemblyCommandHandler.ShouldBeNull();
         callingAssemblyQueryHandler.ShouldBeNull();
+        callingAssemblyAsyncQueryHandler.ShouldBeNull();
         referenceAssemblyCommandHandler.ShouldNotBeNull();
         referenceAssemblyQueryHandler.ShouldNotBeNull();
+        referenceAssemblyAsyncQueryHandler.ShouldNotBeNull();
     }
 }
