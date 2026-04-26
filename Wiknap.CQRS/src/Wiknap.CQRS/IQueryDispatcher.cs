@@ -5,5 +5,9 @@ public interface IQueryDispatcher
     Task<TQueryResult> DispatchAsync<TQuery, TQueryResult>(TQuery query, CancellationToken cancellationToken = default)
         where TQuery : class, IQuery<TQueryResult>;
 
-    Task<TQueryResult> DispatchAsync<TQueryResult>(IQuery<TQueryResult> query, CancellationToken cancellationToken = default);
+    Task<TQueryResult> DispatchAsync<TQueryResult>(IQuery<TQueryResult> query,
+        CancellationToken cancellationToken = default);
+
+    IAsyncEnumerable<TQueryResult> DispatchAsync<TQueryResult>(IAsyncEnumerableQuery<TQueryResult> asyncEnumerableQuery,
+        CancellationToken cancellationToken = default);
 }
