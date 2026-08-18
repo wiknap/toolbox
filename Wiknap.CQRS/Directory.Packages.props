@@ -10,10 +10,10 @@
         <PackageVersion Include="Scrutor" Version="7.0.0"/>
         <PackageVersion Include="Shouldly" Version="4.3.0"/>
         <PackageVersion Include="Wiknap.CQRS" Version="1.0.24"/>
-        <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0">
+        <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageVersion>
-        <PackageVersion Include="xunit.v3" Version="4.0.0"/>
+        <PackageVersion Include="xunit.v3" Version="3.2.2"/>
     </ItemGroup>
 </Project>
