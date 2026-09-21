@@ -12,8 +12,8 @@
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0"/>
         <PackageVersion Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.3.3"/>
         <PackageVersion Include="NSubstitute" Version="6.2.0"/>
-        <PackageVersion Include="OpenTelemetry.Api" Version="1.17.0"/>
-        <PackageVersion Include="OpenTelemetry.Api.ProviderBuilderExtensions" Version="1.17.0"/>
+        <PackageVersion Include="OpenTelemetry.Api" Version="1.19.0"/>
+        <PackageVersion Include="OpenTelemetry.Api.ProviderBuilderExtensions" Version="1.19.0"/>
         <PackageVersion Include="Scrutor" Version="7.0.0"/>
         <PackageVersion Include="Shouldly" Version="4.3.0"/>
         <PackageVersion Include="Wiknap.Email" Version="2.0.38"/>
