@@ -9,7 +9,7 @@
         <PackageVersion Include="NSubstitute" Version="6.2.0"/>
         <PackageVersion Include="Scrutor" Version="7.0.0"/>
         <PackageVersion Include="Shouldly" Version="4.3.0"/>
-        <PackageVersion Include="Wiknap.CQRS" Version="1.0.24"/>
+        <PackageVersion Include="Wiknap.CQRS" Version="1.0.28"/>
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
