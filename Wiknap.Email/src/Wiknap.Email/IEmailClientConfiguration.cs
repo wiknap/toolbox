@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace Wiknap.Email;
 
 public interface IEmailClientConfiguration
@@ -10,4 +12,6 @@ public interface IEmailClientConfiguration
     string Password { get; }
     string? SenderEmail { get; }
     string SenderName { get; }
+
+    IReadOnlyDictionary<string, string> Headers => ReadOnlyDictionary<string, string>.Empty;
 }

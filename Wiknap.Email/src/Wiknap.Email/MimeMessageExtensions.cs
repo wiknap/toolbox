@@ -26,6 +26,12 @@ public static class MimeMessageExtensions
         }
     }
 
+    public static void AddHeaders(this MimeMessage message, IReadOnlyDictionary<string, string> headers)
+    {
+        foreach (var (name, value) in headers)
+            message.Headers.Add(name, value);
+    }
+
     public static EmailContent GetEmailContent(this MimeMessage message)
     {
         var body = !string.IsNullOrEmpty(message.HtmlBody)

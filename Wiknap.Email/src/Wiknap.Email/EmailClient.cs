@@ -26,6 +26,7 @@ public class EmailClient : IEmailClient
     public async Task SendEmailAsync(EmailMessage message, CancellationToken ct = default)
     {
         using var mimeMessage = message.ToMimeMessage(_senderMailboxAddress);
+        mimeMessage.AddHeaders(_configuration.Headers);
         using var client = await GetSmtpClientAsync(ct).ConfigureAwait(false);
         await client.SendAsync(mimeMessage, ct).ConfigureAwait(false);
         await client.DisconnectAsync(true, ct).ConfigureAwait(false);
