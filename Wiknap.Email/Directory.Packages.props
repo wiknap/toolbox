@@ -15,7 +15,7 @@
     <PackageVersion Include="OpenTelemetry.Api.ProviderBuilderExtensions" Version="1.19.1" />
     <PackageVersion Include="Scrutor" Version="7.0.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="Wiknap.Email" Version="2.0.38" />
+    <PackageVersion Include="Wiknap.Email" Version="2.0.40" />
     <PackageVersion Include="Wiknap.Testcontainers.MailServer" Version="1.0.33" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0">
       <PrivateAssets>all</PrivateAssets>
