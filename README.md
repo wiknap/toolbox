@@ -21,3 +21,7 @@
 # Wiknap.PayNow.Configuration
 
 ![NuGet Version](https://img.shields.io/nuget/v/Wiknap.PayNow.Configuration)
+
+# Wiknap.Testcontainers.GreenMail
+
+![NuGet Version](https://img.shields.io/nuget/v/Wiknap.Testcontainers.GreenMail)
